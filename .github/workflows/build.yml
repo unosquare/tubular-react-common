@@ -9,9 +9,9 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: ESLint (JS/TS) Action 
-        uses: iCrawl/action-eslint@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: tinovyatkin/action-eslint@v1
+        with:
+          repo-token: ${{secrets.GITHUB_TOKEN}}
 
   build:
     needs: [lint]
