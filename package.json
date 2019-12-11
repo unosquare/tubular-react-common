@@ -7,7 +7,7 @@
         "build": "tsc --p ./tsconfig.json",
         "start": "npm run build",
         "check": "npm run build && npm test",
-        "test": "npm run build",
+        "test": "jest",
         "lint": "tsc --p ./tsconfig.json --noEmit && eslint src/**/*.{js,ts,tsx} --quiet --fix",
         "preparepackage": "npm run build && npm run copypackage && cd dist && npm pack",
         "copypackage": "npx shx cp package.json dist"
@@ -25,7 +25,7 @@
         "globals": {
             "ts-jest": {
                 "diagnostics": false,
-                "tsConfig": "tsconfig.base.json"
+                "tsConfig": "tsconfig.json"
             }
         }
     },
@@ -44,6 +44,9 @@
         "react-dom": "^16.12.0"
     },
     "devDependencies": {
+        "@testing-library/jest-dom": "^4.2.4",
+        "@testing-library/react": "^9.3.2",
+        "@types/jest": "^24.0.23",
         "@types/react": "^16.9.16",
         "@types/react-dom": "^16.9.4",
         "@typescript-eslint/eslint-plugin": "^2.11.0",
@@ -52,7 +55,9 @@
         "eslint-config-prettier": "^6.7.0",
         "eslint-plugin-prettier": "^3.1.1",
         "eslint-plugin-react": "^7.17.0",
+        "jest": "^24.9.0",
         "prettier": "^1.19.1",
+        "ts-jest": "^24.2.0",
         "tubular-common": "^2.0.7",
         "typescript": "^3.7.3"
     },
