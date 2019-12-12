@@ -10,6 +10,7 @@ export const TubularComponent = () => {
             <div>
                 <button onClick={() => api.goToPage(state.page + 1)}>Go to next page</button>
                 <button onClick={() => api.goToPage(state.page - 1)}>Go to previous page</button>
+                <button onClick={() => api.sortColumn('CustomerName')}>Sort by Customer Name</button>
             </div>
             <table>
                 <thead>
