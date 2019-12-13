@@ -2,7 +2,7 @@
     "compilerOptions": {
         "moduleResolution": "node",
         "preserveConstEnums": true,
-        "outDir": "../dist",
+        "outDir": "./dist",
         "jsx": "react",
         "lib": ["es5", "es6", "dom"],
         "declaration": true,
