@@ -25,10 +25,6 @@
         "testMatch": [
             "<rootDir>/test/**/*.spec.(ts|tsx)"
         ],
-        "collectCoverageFrom": [
-            "<rootDir>/src/**",
-            "!<rootDir>/test/**"
-        ],
         "globals": {
             "ts-jest": {
                 "diagnostics": false,
