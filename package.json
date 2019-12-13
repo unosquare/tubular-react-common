@@ -43,8 +43,7 @@
     },
     "homepage": "https://github.com/unosquare/tubular-react-common#readme",
     "dependencies": {
-        "react": "^16.12.0",
-        "react-dom": "^16.12.0"
+        "tubular-common": "^2.0.7"
     },
     "devDependencies": {
         "@testing-library/jest-dom": "^4.2.4",
@@ -60,8 +59,9 @@
         "eslint-plugin-react": "^7.17.0",
         "jest": "^24.9.0",
         "prettier": "^1.19.1",
+        "react": "^16.12.0",
+        "react-dom": "^16.12.0",
         "ts-jest": "^24.2.0",
-        "tubular-common": "^2.0.7",
         "typescript": "^3.7.3"
     },
     "parcelCleanPaths": []
