@@ -89,20 +89,37 @@ describe('useTubular', () => {
             expectFirstPage(rows);
         });
 
-        it('should sort by CustomerName', async () => {
-            const sortBtn = sut.getByText('Sort by Customer Name');
+        describe('Sorting Asc & Desc', () => {
+            it('should sort by CustomerName ASC', async () => {
+                const sortBtn = sut.getByText('Sort by Customer Name');
 
-            fireEvent.click(sortBtn);
-            await waitForDomChange();
+                fireEvent.click(sortBtn);
+                await waitForDomChange();
 
-            const rows = sut.queryAllByRole('row');
-            const rowsBoundaries = getRowBoundaries(rows);
+                const rows = sut.queryAllByRole('row');
+                const rowsBoundaries = getRowBoundaries(rows);
 
-            expect(rowsBoundaries.first[0]).toHaveTextContent('1');
-            expect(rowsBoundaries.first[1]).toHaveTextContent('Microsoft');
+                expect(rowsBoundaries.first[0]).toHaveTextContent('1');
+                expect(rowsBoundaries.first[1]).toHaveTextContent('Microsoft');
 
-            expect(rowsBoundaries.last[0]).toHaveTextContent('5');
-            expect(rowsBoundaries.last[1]).toHaveTextContent('Super La Playa');
+                expect(rowsBoundaries.last[0]).toHaveTextContent('5');
+                expect(rowsBoundaries.last[1]).toHaveTextContent('Super La Playa');
+            });
+
+            it('should sort by CustomerName DESC', async () => {
+                const sortBtn = sut.getByText('Sort by Customer Name');
+                fireEvent.click(sortBtn);
+                await waitForDomChange();
+
+                const rows = sut.queryAllByRole('row');
+                const rowsBoundaries = getRowBoundaries(rows);
+
+                expect(rowsBoundaries.first[0]).toHaveTextContent('21');
+                expect(rowsBoundaries.first[1]).toHaveTextContent('Wizeline');
+
+                expect(rowsBoundaries.last[0]).toHaveTextContent('5');
+                expect(rowsBoundaries.last[1]).toHaveTextContent('Super La Playa');
+            });
         });
     });
 });

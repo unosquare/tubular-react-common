@@ -7,7 +7,7 @@
         "build": "tsc --p ./tsconfig.json",
         "start": "npm run build",
         "check": "npm run build && npm test",
-        "test": "jest",
+        "test": "jest --collect-coverage",
         "lint": "tsc --p ./tsconfig.json --noEmit && eslint src/**/*.{js,ts,tsx} --quiet --fix",
         "preparepackage": "npm run build && npm run copypackage && cd dist && npm pack",
         "copypackage": "npx shx cp package.json dist"
@@ -22,6 +22,13 @@
         "transform": {
             "^.+\\.(ts|tsx)$": "ts-jest"
         },
+        "testMatch": [
+            "<rootDir>/test/**/*.spec.(ts|tsx)"
+        ],
+        "collectCoverageFrom": [
+            "<rootDir>/src/**",
+            "!<rootDir>/test/**"
+        ],
         "globals": {
             "ts-jest": {
                 "diagnostics": false,
