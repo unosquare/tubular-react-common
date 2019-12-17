@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const useMasterDetails = (): [boolean, () => void] => {
+export const useMasterDetails = (): [boolean, () => void] => {
     const [open, openDetails] = React.useState(false);
 
     return [
@@ -10,5 +10,3 @@ const useMasterDetails = (): [boolean, () => void] => {
         },
     ];
 };
-
-export default useMasterDetails;
