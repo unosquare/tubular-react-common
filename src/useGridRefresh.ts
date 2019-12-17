@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const useGridRefresh = (): [number, () => void] => {
+export const useGridRefresh = (): [number, () => void] => {
     const [refresh, setRefreshCounter] = React.useState(0);
 
     return [
@@ -10,5 +10,3 @@ const useGridRefresh = (): [number, () => void] => {
         },
     ];
 };
-
-export default useGridRefresh;
