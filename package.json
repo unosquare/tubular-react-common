@@ -7,7 +7,8 @@
         "build": "tsc",
         "start": "npm run build",
         "check": "npm run build && npm test",
-        "test": "jest --collect-coverage",
+        "test": "jest",
+        "cest": "jest --collect-coverage",
         "lint": "tsc --noEmit && eslint src/**/*.{js,ts,tsx} --quiet --fix"
     },
     "jest": {
@@ -51,7 +52,7 @@
         "@types/react-dom": "^16.9.4",
         "@typescript-eslint/eslint-plugin": "^2.12.0",
         "@typescript-eslint/parser": "^2.12.0",
-        "eslint": "^6.7.2",
+        "eslint": "^6.8.0",
         "eslint-config-prettier": "^6.7.0",
         "eslint-plugin-prettier": "^3.1.2",
         "eslint-plugin-react": "^7.17.0",
@@ -60,7 +61,7 @@
         "react": "^16.12.0",
         "react-dom": "^16.12.0",
         "ts-jest": "^24.2.0",
-        "typescript": "^3.7.3"
+        "typescript": "^3.7.4"
     },
     "parcelCleanPaths": []
 }
