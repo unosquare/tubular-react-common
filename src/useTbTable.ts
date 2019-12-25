@@ -1,13 +1,13 @@
 import * as React from 'react';
 
-import { ColumnModel, ITubularHttpClient } from 'tubular-common';
+import { ColumnModel, TubularHttpClientAbstract } from 'tubular-common';
 import { ITbOptions } from './types/ITbOptions';
 import { ITbTableInstance } from './types/ITbTableInstance';
 import { useTubular } from './useTubular';
 
 export const useTbTable = (
     initColumns: ColumnModel[],
-    source: any[] | string | Request | ITubularHttpClient,
+    source: {}[] | string | Request | TubularHttpClientAbstract,
     tubularOptions?: Partial<ITbOptions>,
 ): ITbTableInstance => {
     const tubular = useTubular(initColumns, source, tubularOptions);
