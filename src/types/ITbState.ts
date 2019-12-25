@@ -1,8 +1,8 @@
-import { ColumnModel, IDataGridStorage } from 'tubular-common';
+import { ColumnModel, DataGridStorage } from 'tubular-common';
 
 export interface ITbState {
     activeColumn: ColumnModel;
-    aggregate: any;
+    aggregate: {};
     columns: ColumnModel[];
     data: any[];
     error: any;
@@ -12,6 +12,6 @@ export interface ITbState {
     itemsPerPage: number;
     page: number;
     searchText: string;
-    storage: IDataGridStorage;
+    storage: DataGridStorage;
     totalRecordCount: number;
 }

@@ -1,7 +1,7 @@
 import Transformer, {
     GridRequest,
     GridResponse,
-    ITubularHttpClient,
+    TubularHttpClientAbstract,
     parsePayload,
     TubularHttpClient,
 } from 'tubular-common';
@@ -22,24 +22,24 @@ export const getLocalDataSource = (source: any[]) => (request: GridRequest): Pro
     });
 };
 
-export const getRemoteDataSource = (request: string | Request | ITubularHttpClient) => async (
+export const getRemoteDataSource = (request: string | Request | TubularHttpClientAbstract) => async (
     gridRequest: GridRequest,
 ): Promise<GridResponse> => {
-    const httpCast = request as ITubularHttpClient;
-    const httpClient: ITubularHttpClient = httpCast.request ? httpCast : new TubularHttpClient(request);
+    const httpCast = request as TubularHttpClientAbstract;
+    const httpClient: TubularHttpClientAbstract = httpCast.request ? httpCast : new TubularHttpClient(request);
 
-    const data = await httpClient.fetch(gridRequest);
+    const data: any = await httpClient.fetch(gridRequest);
     if (!TubularHttpClient.isValidResponse(data)) {
         throw new Error('Server response is a invalid Tubular object');
     }
 
-    data.Payload = data.Payload.map((row: any) => parsePayload(row, gridRequest.Columns));
+    data.payload = data.payload.map((row: {}) => parsePayload(row, gridRequest.columns));
 
     return data;
 };
 
 export const generateOnRowClickProxy = (onRowClick: any) => {
-    return (row: any) => () => {
+    return (row: {}) => () => {
         if (onRowClick) {
             onRowClick(row);
         }

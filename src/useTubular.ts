@@ -5,9 +5,9 @@ import {
     CompareOperators,
     GridRequest,
     GridResponse,
-    IDataGridStorage,
-    IFilterWrapper,
-    ITubularHttpClient,
+    DataGridStorage,
+    FilterWrapper,
+    TubularHttpClientAbstract,
     LocalStorage,
     NullStorage,
 } from 'tubular-common';
@@ -36,7 +36,7 @@ const createTbOptions = (tubularOptions?: Partial<ITbOptions>): ITbOptions => {
 };
 export const useTubular = (
     initColumns: ColumnModel[],
-    source: any[] | string | Request | ITubularHttpClient,
+    source: {}[] | string | Request | TubularHttpClientAbstract,
     tubularOptions?: Partial<ITbOptions>,
 ): ITbInstance => {
     const tbOptions = createTbOptions(tubularOptions);
@@ -53,7 +53,7 @@ export const useTubular = (
     const [isStorageLoaded, setIsStorageLoaded] = React.useState(false);
     const [getActiveColumn, setActiveColumn] = React.useState<ColumnModel>(null);
     const [getItemsPerPage, setItemsPerPage] = React.useState<number>(pagination.itemsPerPage || 10);
-    const [getStorage] = React.useState<IDataGridStorage>(initStorage);
+    const [getStorage] = React.useState<DataGridStorage>(initStorage);
     const [getPage, setPage] = React.useState<number>(pagination.page || 0);
     const [getSearchText, setSearchText] = React.useState<string>(searchText || '');
     const [getError, setError] = React.useState(null);
@@ -67,16 +67,14 @@ export const useTubular = (
     });
 
     const api: ITbApi = {
-        exportTo: async (allRows: boolean, exportFunc: (payload: any[], columns: ColumnModel[]) => void) => {
+        exportTo: async (allRows: boolean, exportFunc: (payload: {}[], columns: ColumnModel[]) => void) => {
             if (getState.filteredRecordCount === 0) {
                 return;
             }
 
-            let payload: any[] = getState.data;
-            if (allRows) {
-                const { Payload } = await getAllRecords(new GridRequest(getColumns, -1, 0, getSearchText));
-                payload = Payload;
-            }
+            const payload = allRows
+                ? getState.data
+                : (await getAllRecords(new GridRequest(getColumns, -1, 0, getSearchText))).payload;
 
             exportFunc(payload, getColumns);
         },
@@ -85,11 +83,11 @@ export const useTubular = (
                 setPage(page);
             }
         },
-        handleFilterChange: (value: IFilterWrapper) => {
+        handleFilterChange: (value: FilterWrapper) => {
             setActiveColumn({
                 ...getActiveColumn,
-                Filter: {
-                    ...getActiveColumn.Filter,
+                filter: {
+                    ...getActiveColumn.filter,
                     ...(value as any),
                 },
             } as ColumnModel);
@@ -100,10 +98,9 @@ export const useTubular = (
             try {
                 const request = new GridRequest(getColumns, getItemsPerPage, getPage, getSearchText);
                 const response: GridResponse = await getAllRecords(request);
-                // console.log("Response: ", response);
 
-                const maxPage = Math.ceil(response.TotalRecordCount / getItemsPerPage);
-                let currentPage = response.CurrentPage > maxPage ? maxPage : response.CurrentPage;
+                const maxPage = Math.ceil(response.totalRecordCount / getItemsPerPage);
+                let currentPage = response.currentPage > maxPage ? maxPage : response.currentPage;
                 currentPage = currentPage === 0 ? 0 : currentPage - 1;
 
                 // TODO: Check this won't case an issue
@@ -113,10 +110,10 @@ export const useTubular = (
                     getStorage.setTextSearch(getSearchText);
 
                     setState({
-                        aggregate: response.AggregationPayload,
-                        data: response.Payload,
-                        filteredRecordCount: response.FilteredRecordCount || 0,
-                        totalRecordCount: response.TotalRecordCount || 0,
+                        aggregate: response.aggregationPayload,
+                        data: response.payload,
+                        filteredRecordCount: response.filteredRecordCount || 0,
+                        totalRecordCount: response.totalRecordCount || 0,
                     });
 
                     setIsLoading(false);
@@ -133,15 +130,15 @@ export const useTubular = (
             }
         },
         setActiveColumn,
-        setFilter: (value: IFilterWrapper) => {
+        setFilter: (value: FilterWrapper) => {
             const columns = [...getColumns];
-            const column = columns.find((c: ColumnModel) => c.Name === getActiveColumn.Name);
+            const column = columns.find((c: ColumnModel) => c.name === getActiveColumn.name);
             if (!column) {
                 return;
             }
 
-            column.Filter = {
-                ...getActiveColumn.Filter,
+            column.filter = {
+                ...getActiveColumn.filter,
                 ...value,
             };
 
@@ -184,25 +181,25 @@ export const useTubular = (
         if (storedColumns) {
             const columns = [...getColumns];
 
-            storedColumns.forEach(column => {
-                const currentColumn = columns.find((col: ColumnModel) => col.Name === column.Name);
+            storedColumns.forEach((column: ColumnModel) => {
+                const currentColumn = columns.find((col: ColumnModel) => col.name === column.name);
 
                 if (!currentColumn) {
                     return;
                 }
 
-                currentColumn.Visible = column.Visible;
+                currentColumn.visible = column.visible;
 
-                if (currentColumn.Filter !== null && currentColumn.Filter.Text !== null) {
+                if (currentColumn.filter !== null && currentColumn.filter.text !== null) {
                     return;
                 }
 
                 if (
-                    column.Filter != null &&
-                    column.Filter.Text != null &&
-                    column.Filter.Operator !== CompareOperators.NONE
+                    column.filter != null &&
+                    column.filter.text != null &&
+                    column.filter.operator !== CompareOperators.None
                 ) {
-                    currentColumn.Filter = column.Filter;
+                    currentColumn.filter = column.filter;
                 }
             });
 
