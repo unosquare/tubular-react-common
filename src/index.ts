@@ -4,4 +4,4 @@ export * from './useTbTable';
 export * from './useGridRefresh';
 export * from './useMasterDetails';
 export * from './types';
-export { generateOnRowClickProxy } from './helpers';
+export { generateOnRowClickProxy, exportGrid } from './helpers';
