@@ -31,10 +31,13 @@ export const getRemoteDataSource = (request: string | Request | TubularHttpClien
     const httpCast = request as TubularHttpClientAbstract;
     const httpClient: TubularHttpClientAbstract = httpCast.request ? httpCast : new TubularHttpClient(request);
 
-    const data: any = await httpClient.fetch(gridRequest);
+    const data: GridResponse = await httpClient.fetch(gridRequest);
+
     if (!TubularHttpClient.isValidResponse(data)) {
         throw new Error('Server response is a invalid Tubular object');
     }
+
+    TubularHttpClient.fixResponse(data);
 
     data.payload = data.payload.map((row: {}) => parsePayload(row, gridRequest.columns));
 
