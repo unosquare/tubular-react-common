@@ -88,7 +88,7 @@ export const useTubular = (
                 ...getActiveColumn,
                 filter: {
                     ...getActiveColumn.filter,
-                    ...(value as any),
+                    ...value,
                 },
             } as ColumnModel);
         },
@@ -138,6 +138,7 @@ export const useTubular = (
                 return;
             }
 
+            column.hasFilter = value.hasFilter;
             column.filter = {
                 ...getActiveColumn.filter,
                 ...value,
