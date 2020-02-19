@@ -130,6 +130,7 @@ export const useTubular = (
             }
         },
         setActiveColumn,
+        setColumns,
         setFilter: (value: FilterWrapper) => {
             const columns = [...getColumns];
             const column = columns.find((c: ColumnModel) => c.name === getActiveColumn.name);
