@@ -6,6 +6,7 @@ export interface ITbApi {
     handleFilterChange: (value: FilterWrapper) => void;
     processRequest: () => void;
     setActiveColumn: (column: ColumnModel) => void;
+    setColumns: (columns: ColumnModel[]) => void;
     setFilter: (value: FilterWrapper) => void;
     sortColumn: (columnName: string, multiSort?: boolean) => void;
     updateItemPerPage: (itemsPerPage: number) => void;
