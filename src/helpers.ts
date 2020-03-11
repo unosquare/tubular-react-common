@@ -11,9 +11,7 @@ import Transformer, {
 
 let id = 0;
 
-export const tbId = () => {
-    return `tbComponent_${id++}`;
-};
+export const tbId = () => `tbComponent_${id++}`;
 
 export const getLocalDataSource = (source: any[]) => (request: GridRequest): Promise<GridResponse> => {
     return new Promise((resolve, reject) => {
