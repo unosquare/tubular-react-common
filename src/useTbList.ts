@@ -39,7 +39,7 @@ export const useTbList = (
     };
 
     React.useEffect(() => {
-        setListState(state => {
+        setListState((state) => {
             return {
                 hasNextPage: state.items.length + tubular.state.data.length < tubular.state.filteredRecordCount,
                 items: [...state.items].concat(...tubular.state.data),
