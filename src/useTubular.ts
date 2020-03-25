@@ -3,18 +3,18 @@ import * as ReactDom from 'react-dom';
 import {
     ColumnModel,
     CompareOperators,
-    GridRequest,
-    GridResponse,
     DataGridStorage,
     FilterWrapper,
-    TubularHttpClientAbstract,
+    GridRequest,
+    GridResponse,
     LocalStorage,
     NullStorage,
+    TubularHttpClientAbstract,
 } from 'tubular-common';
-import { ITbOptions } from './types/ITbOptions';
+import { getLocalDataSource, getRemoteDataSource, tbId } from './helpers';
 import { ITbApi } from './types/ITbApi';
 import { ITbInstance } from './types/ITbInstance';
-import { getLocalDataSource, getRemoteDataSource, tbId } from './helpers';
+import { ITbOptions } from './types/ITbOptions';
 
 const createTbOptions = (tubularOptions?: Partial<ITbOptions>): ITbOptions => {
     const temp = tubularOptions || {};
@@ -73,8 +73,8 @@ export const useTubular = (
             }
 
             const payload = allRows
-                ? getState.data
-                : (await getAllRecords(new GridRequest(getColumns, -1, 0, getSearchText))).payload;
+                ? (await getAllRecords(new GridRequest(getColumns, -1, 0, getSearchText))).payload
+                : getState.data;
 
             exportFunc(payload, getColumns);
         },
