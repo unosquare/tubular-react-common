@@ -6,10 +6,10 @@ import {
     GridRequest,
     GridResponse,
     DataGridStorage,
-    FilterWrapper,
     TubularHttpClientAbstract,
     LocalStorage,
     NullStorage,
+    sortColumnArray,
 } from 'tubular-common';
 import { ITbOptions } from './types/ITbOptions';
 import { ITbApi } from './types/ITbApi';
@@ -83,14 +83,13 @@ export const useTubular = (
                 setPage(page);
             }
         },
-        handleFilterChange: (value: FilterWrapper) => {
+        handleFilterChange: (filterText: string, filterOperator: CompareOperators, filterArgument?: any[]) => {
             setActiveColumn({
                 ...getActiveColumn,
-                filter: {
-                    ...getActiveColumn.filter,
-                    ...value,
-                },
-            } as ColumnModel);
+                filterText,
+                filterOperator,
+                filterArgument,
+            });
         },
         processRequest: async () => {
             setIsLoading(true);
@@ -131,23 +130,20 @@ export const useTubular = (
         },
         setActiveColumn,
         setColumns,
-        setFilter: (value: FilterWrapper) => {
+        setFilter: (filterText: string, filterOperator: CompareOperators, filterArgument?: any[]) => {
             const columns = [...getColumns];
             const column = columns.find((c: ColumnModel) => c.name === getActiveColumn.name);
             if (!column) {
                 return;
             }
-
-            column.hasFilter = value.hasFilter;
-            column.filter = {
-                ...getActiveColumn.filter,
-                ...value,
-            };
+            column.filterText = filterText;
+            column.filterOperator = filterOperator;
+            column.filterArgument = filterArgument;
 
             setColumns([...columns]);
         },
         sortColumn: (property: string, multiSort = false) => {
-            const columns = ColumnModel.sortColumnArray(property, [...getColumns], multiSort);
+            const columns = sortColumnArray(property, [...getColumns], multiSort);
 
             setColumns(columns);
         },
@@ -192,17 +188,13 @@ export const useTubular = (
 
                 currentColumn.visible = column.visible;
 
-                if (currentColumn.filter !== null && currentColumn.filter.text !== null) {
+                if (currentColumn.filterText !== null && column.filterOperator !== CompareOperators.None) {
                     return;
                 }
 
-                if (
-                    column.filter != null &&
-                    column.filter.text != null &&
-                    column.filter.operator !== CompareOperators.None
-                ) {
-                    currentColumn.filter = column.filter;
-                }
+                currentColumn.filterText = column.filterText;
+                currentColumn.filterOperator = column.filterOperator;
+                currentColumn.filterArgument = column.filterArgument;
             });
 
             setColumns(columns);
