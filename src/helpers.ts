@@ -1,4 +1,4 @@
-import Transformer, {
+import {
     getCsv,
     getHtml,
     ColumnModel,
@@ -7,6 +7,7 @@ import Transformer, {
     TubularHttpClientAbstract,
     parsePayload,
     TubularHttpClient,
+    Transformer,
 } from 'tubular-common';
 
 let id = 0;
