@@ -8,7 +8,6 @@
         "start": "npm run build",
         "check": "npm run build && npm test",
         "test": "jest",
-        "cest": "jest --collect-coverage",
         "lint": "tsc --noEmit && eslint src/**/*.{js,ts,tsx} --quiet --fix"
     },
     "jest": {
@@ -34,6 +33,15 @@
                 "diagnostics": false,
                 "tsConfig": "tsconfig.json"
             }
+        },
+        "collectCoverage": true,
+        "coverageThreshold": {
+            "global": {
+                "branches": 40,
+                "functions": 25,
+                "lines": 35,
+                "statements": -148
+            }
         }
     },
     "repository": {
@@ -47,25 +55,25 @@
     },
     "homepage": "https://github.com/unosquare/tubular-react-common#readme",
     "dependencies": {
-        "tubular-common": "^4.0.3"
+        "tubular-common": "^4.0.5"
     },
     "devDependencies": {
-        "@testing-library/jest-dom": "^5.3.0",
-        "@testing-library/react": "^10.0.2",
-        "@types/jest": "^25.1.5",
-        "@types/react": "^16.9.32",
+        "@testing-library/jest-dom": "^5.5.0",
+        "@testing-library/react": "^10.0.3",
+        "@types/jest": "^25.2.1",
+        "@types/react": "^16.9.34",
         "@types/react-dom": "^16.9.6",
-        "@typescript-eslint/eslint-plugin": "^2.26.0",
-        "@typescript-eslint/parser": "^2.26.0",
+        "@typescript-eslint/eslint-plugin": "^2.29.0",
+        "@typescript-eslint/parser": "^2.29.0",
         "eslint": "^6.8.0",
-        "eslint-config-prettier": "^6.10.1",
-        "eslint-plugin-prettier": "^3.1.2",
+        "eslint-config-prettier": "^6.11.0",
+        "eslint-plugin-prettier": "^3.1.3",
         "eslint-plugin-react": "^7.19.0",
-        "jest": "^25.2.7",
-        "prettier": "^2.0.2",
+        "jest": "^25.4.0",
+        "prettier": "^2.0.5",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
-        "ts-jest": "^25.3.1",
+        "ts-jest": "^25.4.0",
         "typescript": "^3.8.3"
     }
 }
