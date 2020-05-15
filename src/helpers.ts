@@ -69,21 +69,22 @@ function printDoc(gridResult: [], columns: ColumnModel[], gridName: string) {
 function exportFile(gridResult: [], columns: ColumnModel[]) {
     const csvFile = getCsv(gridResult, columns);
 
-    const fileURL = URL.createObjectURL(
-        new Blob([`\uFEFF${csvFile}`], {
-            type: 'text/csv;charset=utf-8;',
-        }),
-    );
-
-    const downloadLink = document.createElement('a');
-
-    downloadLink.setAttribute('href', fileURL);
-    downloadLink.setAttribute('id', 'download');
-    downloadLink.setAttribute('download', 'data.csv');
-    document.body.appendChild(downloadLink);
-
-    downloadLink.click();
-    URL.revokeObjectURL(fileURL);
+    var blob = new Blob(["\uFEFF" + csvFile], {
+        type: 'text/csv;charset=utf-8;',
+    });
+    
+    if (navigator.msSaveBlob) { // IE 10+
+        navigator.msSaveBlob(blob, "data.csv")
+    } else {
+        var fileURL = URL.createObjectURL(blob);
+        var downloadLink = document.createElement('a');
+        downloadLink.setAttribute('href', fileURL);
+        downloadLink.setAttribute('id', 'download');
+        downloadLink.setAttribute('download', 'data.csv');
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        URL.revokeObjectURL(fileURL);
+    }
 }
 
 export const exportGrid = (media: string, gridResult: [], columns: ColumnModel[], gridName: string) => {
