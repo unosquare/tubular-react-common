@@ -7,7 +7,7 @@ export const MasterDetailsComponent = () => {
         <>
             <div>
                 <span data-testid='openValue'>{ open ? 'Open' : 'Closed'}</span>
-                <button onClick={()=>openDetails()}>Open/Close</button>
+                <button onClick={openDetails}>Open/Close</button>
             </div>
         </>
     );

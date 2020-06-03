@@ -7,7 +7,7 @@ export const GridRefreshComponent = () => {
         <>
             <div>
                 <span data-testid='refreshValue'>{ refresh }</span>
-                <button onClick={()=>setRefreshCounter()}>Refresh</button>
+                <button onClick={setRefreshCounter}>Refresh</button>
             </div>
         </>
     );
