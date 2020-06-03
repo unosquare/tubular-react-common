@@ -43,8 +43,8 @@ export const getRemoteDataSource = (request: string | Request | TubularHttpClien
     return data;
 };
 
-export const generateOnRowClickProxy = (onRowClick: any) => {
-    return (row: {}) => () => {
+export const generateOnRowClickProxy = (onRowClick: (row: Record<string, any>) => void) => {
+    return (row: Record<string, any>) => () => {
         if (onRowClick) {
             onRowClick(row);
         }
