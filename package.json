@@ -42,7 +42,10 @@
                 "lines": 30,
                 "statements": -180
             }
-        }
+        },
+        "setupFilesAfterEnv": [
+            "./setupJestEnv.ts"
+        ]
     },
     "repository": {
         "type": "git",

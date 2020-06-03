@@ -1,6 +1,3 @@
-import '@testing-library/jest-dom/extend-expect';
-// NOTE: jest-dom adds handy assertions to Jest and is recommended, but not required
-
 import * as React from 'react';
 import { render, getAllByRole, RenderResult, fireEvent, waitFor, getByRole } from '@testing-library/react';
 import { TubularComponent } from './components/tubularComponent';
