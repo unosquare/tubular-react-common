@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render, fireEvent, getByText, getByTestId } from '@testing-library/react';
-import { GridRefreshComponent } from './components/GridRefreshComponent';
+import { GridRefreshComponent } from './components/gridRefreshComponent';
 
 describe('useGridRefresh', () => {
     it('should render initial state w/o problem and refresh value 0', async () => {
