@@ -12,7 +12,7 @@ import {
 
 let id = 0;
 
-export const tbId = () => `tbComponent_${id++}`;
+export const tbId = (): string => `tbComponent_${id++}`;
 
 export const getLocalDataSource = (source: any[]) => (request: GridRequest): Promise<GridResponse> => {
     return new Promise((resolve, reject) => {
@@ -38,7 +38,7 @@ export const getRemoteDataSource = (request: string | Request | TubularHttpClien
 
     TubularHttpClient.fixResponse(data);
 
-    data.payload = data.payload.map((row: {}) => parsePayload(row, gridRequest.columns));
+    data.payload = data.payload.map((row: Record<string, any>) => parsePayload(row, gridRequest.columns));
 
     return data;
 };
