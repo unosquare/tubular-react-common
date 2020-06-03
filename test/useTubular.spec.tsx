@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/extend-expect';
 // NOTE: jest-dom adds handy assertions to Jest and is recommended, but not required
 
 import * as React from 'react';
-import { render, waitForDomChange, getAllByRole, RenderResult, fireEvent } from '@testing-library/react';
+import { render, getAllByRole, RenderResult, fireEvent, waitFor, getByRole } from '@testing-library/react';
 import { TubularComponent } from './components/tubularComponent';
 
 const getRowBoundaries = (rows: any[]) => {
@@ -36,7 +36,8 @@ describe('useTubular', () => {
         let sut: RenderResult;
         beforeEach(async () => {
             sut = render(<TubularComponent />);
-            await waitForDomChange();
+            const table = getByRole(sut.container, 'table');
+            await waitFor(()=> expect(table).toBeDefined());
         });
 
         it('should show first page by default', async () => {
@@ -51,7 +52,8 @@ describe('useTubular', () => {
                 const nextPageBtn = sut.getByText('Go to next page');
 
                 fireEvent.click(nextPageBtn);
-                await waitForDomChange();
+                const table = getByRole(sut.container, 'table');
+                await waitFor(()=> expect(table).toBeDefined());
 
                 const rows = sut.queryAllByRole('row');
                 const rowsBoundaries = getRowBoundaries(rows);
@@ -67,7 +69,8 @@ describe('useTubular', () => {
                 const prevPageBtn = sut.getByText('Go to previous page');
 
                 fireEvent.click(prevPageBtn);
-                await waitForDomChange();
+                const table = getByRole(sut.container, 'table');
+                await waitFor(()=> expect(table).toBeDefined());
 
                 const rows = sut.queryAllByRole('row');
                 expectFirstPage(rows);
@@ -79,7 +82,8 @@ describe('useTubular', () => {
         let sut: RenderResult;
         beforeEach(async () => {
             sut = render(<TubularComponent />);
-            await waitForDomChange();
+            const table = getByRole(sut.container, 'table');
+            await waitFor(()=> expect(table).toBeDefined());
         });
 
         it('should show first page by default', async () => {
@@ -94,7 +98,8 @@ describe('useTubular', () => {
                 const sortBtn = sut.getByText('Sort by Customer Name');
 
                 fireEvent.click(sortBtn);
-                await waitForDomChange();
+                const table = getByRole(sut.container, 'table');
+                await waitFor(()=> expect(table).toBeDefined());
 
                 const rows = sut.queryAllByRole('row');
                 const rowsBoundaries = getRowBoundaries(rows);
@@ -109,7 +114,8 @@ describe('useTubular', () => {
             it('should sort by CustomerName DESC', async () => {
                 const sortBtn = sut.getByText('Sort by Customer Name');
                 fireEvent.click(sortBtn);
-                await waitForDomChange();
+                const table = getByRole(sut.container, 'table');
+                await waitFor(()=> expect(table).toBeDefined());
 
                 const rows = sut.queryAllByRole('row');
                 const rowsBoundaries = getRowBoundaries(rows);
