@@ -15,9 +15,7 @@ export const TbTableComponent = () => {
                     <tr role="rowheader">
                         {state.columns
                             .filter(col => col.visible)
-                            .map(col => {
-                                return <th key={col.name}>{col.label}</th>;
-                            })}
+                            .map(col => (<th key={col.name}>{col.label}</th>))}
                     </tr>
                 </thead>
                 <tbody>
