@@ -26,13 +26,11 @@ export const TbTableComponent = () => {
                             <tr key={index}>
                                 {state.columns
                                     .filter(col => col.visible)
-                                    .map(col => {
-                                        return (
-                                            <td role="cell" key={col.name}>
-                                                {row[col.name]}
-                                            </td>
-                                        );
-                                    })}
+                                    .map(col => (
+                                        <td role="cell" key={col.name}>
+                                            {row[col.name]}
+                                        </td>
+                                    ))}
                             </tr>
                         );
                     })}
