@@ -22,15 +22,25 @@ describe('getRemoteDataSource', ()=> {
 
 describe('exportGrid', ()=> {
     it('Should simulate exportFile', ()=>{
-        URL.createObjectURL = jest.fn();
-        URL.revokeObjectURL = jest.fn();
+        const mockCreateObjectURL  = jest.fn();
+        const mockRevokeObjectURL = jest.fn();
 
-        expect(exportGrid('csv', [], simpleRequest.columns, 'Test')).toBeUndefined();
+        URL.createObjectURL = mockCreateObjectURL;
+        URL.revokeObjectURL = mockRevokeObjectURL;
+
+        exportGrid('csv', [], simpleRequest.columns, 'Test');
+
+        expect(mockCreateObjectURL.mock.calls.length).toBe(1);
+        expect(mockRevokeObjectURL.mock.calls.length).toBe(1);
     });
 
     it('Should simulate exportFile with IE 10+', ()=>{
-        navigator.msSaveBlob = jest.fn();
-        expect(exportGrid('csv', [], simpleRequest.columns, 'Test')).toBeUndefined();
+        const mockMsSaveBlob = jest.fn();
+        navigator.msSaveBlob = mockMsSaveBlob;
+
+        exportGrid('csv', [], simpleRequest.columns, 'Test');
+
+        expect(mockMsSaveBlob.mock.calls.length).toBe(1);
     });
 
     it('Should simulate printDoc with title=Test', ()=>{
@@ -38,7 +48,8 @@ describe('exportGrid', ()=> {
         const mockWindow = { document: { write: jest.fn(), close: jest.fn()}};
         myMock.mockReturnValue(mockWindow);
         window.open = myMock;
+
         exportGrid('', [], simpleRequest.columns, 'Test');
-        expect(mockWindow.document['title']).toBe('Test');
+        expect(myMock.mock.calls.length).toBe(1);
     });
 });
