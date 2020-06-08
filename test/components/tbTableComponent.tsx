@@ -19,8 +19,7 @@ export const TbTableComponent = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {state.data.map((row, index) => {
-                        return (
+                    {state.data.map((row, index) => (
                             <tr key={index}>
                                 {state.columns
                                     .filter(col => col.visible)
@@ -30,8 +29,7 @@ export const TbTableComponent = () => {
                                         </td>
                                     ))}
                             </tr>
-                        );
-                    })}
+                        ))}
                 </tbody>
             </table>
         </>
