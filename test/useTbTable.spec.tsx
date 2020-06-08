@@ -28,7 +28,7 @@ describe('TbTableComponent', ()=> {
         expect(container).toBeDefined();
     });
 
-    it('Pressing a key different to Control', async () => {
+    it('Pressing a key different to Control to avoid a succes execution of keyDown and keyUp', async () => {
         const { container } = render(<TbTableComponent />);
 
         fireEvent.keyDown(container, { key: 'Enter', code: 'Enter' });
