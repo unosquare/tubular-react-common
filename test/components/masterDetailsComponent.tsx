@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useMasterDetails } from '../../src/useMasterDetails';
+import { useMasterDetails } from '../../src';
 
 export const MasterDetailsComponent = () => {
     const [open, openDetails] = useMasterDetails();
