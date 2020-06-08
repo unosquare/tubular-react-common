@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useTubular } from '../../src/useTubular';
+import { useTubular } from '../../src';
 import columns from '../fixtures/columns';
 import localData from '../fixtures/localData';
 

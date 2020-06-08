@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useGridRefresh } from '../../src/useGridRefresh';
+import { useGridRefresh } from '../../src';
 
 export const GridRefreshComponent = () => {
     const [refresh, setRefreshCounter] = useGridRefresh();

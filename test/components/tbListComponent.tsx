@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useTbList } from '../../src/useTbList';
+import { useTbList } from '../../src';
 import columns from '../fixtures/columns';
 import localData from '../fixtures/localData';
 
