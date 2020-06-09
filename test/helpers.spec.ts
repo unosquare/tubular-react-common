@@ -1,4 +1,5 @@
-import { exportGrid, getRemoteDataSource, getLocalDataSource, tbId } from '../src/helpers';
+import { getRemoteDataSource, getLocalDataSource, tbId } from '../src/helpers';
+import { exportGrid, generateOnRowClickProxy } from '../src';
 import { simpleRequest } from './mock';
 
 describe('tbId', ()=> {
@@ -17,6 +18,15 @@ describe('getLocalDataSource', ()=> {
 describe('getRemoteDataSource', ()=> {
     it('Rejects', ()=>{
         expect(getRemoteDataSource(null)(null)).rejects.not.toBeNull();
+    });
+});
+
+describe('generateOnRowClickProxy', ()=> {
+    it('Should execute onRowClick function', ()=>{
+        const row: Record<string, any> = ["key", null];
+        const onRowClick = jest.fn();
+        generateOnRowClickProxy(onRowClick(row));
+        expect(onRowClick.mock.calls.length).toBe(1);
     });
 });
 
