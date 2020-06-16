@@ -32,7 +32,7 @@ export const getRemoteDataSource = (request: string | Request | TubularHttpClien
 
     const data: GridResponse = await httpClient.fetch(gridRequest);
 
-    if (!TubularHttpClient.isValidResponse(data)) {
+    if (!TubularHttpClient.isValidResponse(data as any)) {
         throw new Error('Server response is a invalid Tubular object');
     }
 
@@ -44,14 +44,14 @@ export const getRemoteDataSource = (request: string | Request | TubularHttpClien
 };
 
 export const generateOnRowClickProxy = (onRowClick: (row: Record<string, any>) => void) => {
-    return (row: Record<string, any>) => () => {
+    return (row: Record<string, any>) => (): void => {
         if (onRowClick) {
             onRowClick(row);
         }
     };
 };
 
-function printDoc(gridResult: [], columns: ColumnModel[], gridName: string) {
+function printDoc(gridResult: [], columns: ColumnModel[], gridName: string): void {
     const tableHtml = getHtml(gridResult, columns);
 
     const documentToPrint = window.open('about:blank', 'Print', 'location=0,height=500,width=800');
@@ -66,7 +66,7 @@ function printDoc(gridResult: [], columns: ColumnModel[], gridName: string) {
     documentToPrint.document.close();
 }
 
-function exportFile(gridResult: [], columns: ColumnModel[]) {
+function exportFile(gridResult: [], columns: ColumnModel[]): void {
     const csvFile = getCsv(gridResult, columns);
 
     const blob = new Blob(['\uFEFF' + csvFile], {
@@ -88,7 +88,7 @@ function exportFile(gridResult: [], columns: ColumnModel[]) {
     }
 }
 
-export const exportGrid = (media: string, gridResult: [], columns: ColumnModel[], gridName: string) => {
+export const exportGrid = (media: string, gridResult: [], columns: ColumnModel[], gridName: string): void => {
     if (media === 'csv') {
         exportFile(gridResult, columns);
     } else {

@@ -7,7 +7,7 @@ import { useTubular } from './useTubular';
 
 export const useTbList = (
     initColumns: ColumnModel[],
-    source: {}[] | string | Request | TubularHttpClientAbstract,
+    source: any[] | string | Request | TubularHttpClientAbstract,
     tubularOptions?: Partial<ITbOptions>,
 ): ITbListInstance => {
     const tubular = useTubular(initColumns, source, tubularOptions);

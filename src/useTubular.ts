@@ -36,7 +36,7 @@ const createTbOptions = (tubularOptions?: Partial<ITbOptions>): ITbOptions => {
 };
 export const useTubular = (
     initColumns: ColumnModel[],
-    source: {}[] | string | Request | TubularHttpClientAbstract,
+    source: any[] | string | Request | TubularHttpClientAbstract,
     tubularOptions?: Partial<ITbOptions>,
 ): ITbInstance => {
     const tbOptions = createTbOptions(tubularOptions);
@@ -67,7 +67,7 @@ export const useTubular = (
     });
 
     const api: ITbApi = {
-        exportTo: async (allRows: boolean, exportFunc: (payload: {}[], columns: ColumnModel[]) => void) => {
+        exportTo: async (allRows: boolean, exportFunc: (payload: any[], columns: ColumnModel[]) => void) => {
             if (getState.filteredRecordCount === 0) {
                 return;
             }
