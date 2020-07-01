@@ -49,10 +49,10 @@
         "collectCoverage": true,
         "coverageThreshold": {
             "global": {
-                "branches": 40,
-                "functions": 25,
-                "lines": 30,
-                "statements": -180
+                "branches": 57,
+                "functions": 68,
+                "lines": 73,
+                "statements": -75
             }
         },
         "setupFilesAfterEnv": [
