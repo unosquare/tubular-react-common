@@ -1,7 +1,6 @@
 import { ColumnModel, DataGridStorage } from 'tubular-common';
 
 export interface ITbState {
-    activeColumn: ColumnModel;
     aggregate: Record<string, number>;
     columns: ColumnModel[];
     data: any[];

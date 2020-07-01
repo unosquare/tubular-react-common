@@ -9,6 +9,6 @@ export interface ITbApi {
     setColumns: (columns: ColumnModel[]) => void;
     setFilter: (filterText: string, filterOperator: CompareOperators, filterArgument?: any[]) => void;
     sortColumn: (columnName: string, multiSort?: boolean) => void;
-    updateItemPerPage: (itemsPerPage: number) => void;
+    updateItemsPerPage: (itemsPerPage: number) => void;
     updateSearchText: (searchText: string) => void;
 }
