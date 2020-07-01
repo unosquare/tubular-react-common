@@ -34,7 +34,7 @@ describe('useTubular', () => {
         beforeEach(async () => {
             sut = render(<TubularComponent />);
             const table = getByRole(sut.container, 'table');
-            await waitFor(()=> expect(table).toBeDefined());
+            await waitFor(() => expect(table).toBeDefined());
         });
 
         it('should show first page by default', async () => {
@@ -50,7 +50,7 @@ describe('useTubular', () => {
 
                 fireEvent.click(nextPageBtn);
                 const table = getByRole(sut.container, 'table');
-                await waitFor(()=> expect(table).toBeDefined());
+                await waitFor(() => expect(table).toBeDefined());
 
                 const rows = sut.queryAllByRole('row');
                 const rowsBoundaries = getRowBoundaries(rows);
@@ -67,7 +67,7 @@ describe('useTubular', () => {
 
                 fireEvent.click(prevPageBtn);
                 const table = getByRole(sut.container, 'table');
-                await waitFor(()=> expect(table).toBeDefined());
+                await waitFor(() => expect(table).toBeDefined());
 
                 const rows = sut.queryAllByRole('row');
                 expectFirstPage(rows);
@@ -80,7 +80,7 @@ describe('useTubular', () => {
         beforeEach(async () => {
             sut = render(<TubularComponent />);
             const table = getByRole(sut.container, 'table');
-            await waitFor(()=> expect(table).toBeDefined());
+            await waitFor(() => expect(table).toBeDefined());
         });
 
         it('should show first page by default', async () => {
@@ -96,7 +96,7 @@ describe('useTubular', () => {
 
                 fireEvent.click(sortBtn);
                 const table = getByRole(sut.container, 'table');
-                await waitFor(()=> expect(table).toBeDefined());
+                await waitFor(() => expect(table).toBeDefined());
 
                 const rows = sut.queryAllByRole('row');
                 const rowsBoundaries = getRowBoundaries(rows);
@@ -112,7 +112,7 @@ describe('useTubular', () => {
                 const sortBtn = sut.getByText('Sort by Customer Name');
                 fireEvent.click(sortBtn);
                 const table = getByRole(sut.container, 'table');
-                await waitFor(()=> expect(table).toBeDefined());
+                await waitFor(() => expect(table).toBeDefined());
 
                 const rows = sut.queryAllByRole('row');
                 const rowsBoundaries = getRowBoundaries(rows);

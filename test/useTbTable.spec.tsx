@@ -12,7 +12,7 @@ const getRowBoundaries = (rows: any[]) => {
     };
 };
 
-describe('TbTableComponent', ()=> {
+describe('TbTableComponent', () => {
     it('should render initial state w/o problem', async () => {
         const { getByRole } = render(<TbTableComponent />);
         const table = getByRole('table');
@@ -43,7 +43,7 @@ describe('TbTableComponent', ()=> {
 
         fireEvent.click(sortBtn);
         const table = getByRole(sut.container, 'table');
-        await waitFor(()=> expect(table).toBeDefined());
+        await waitFor(() => expect(table).toBeDefined());
 
         const rows = sut.queryAllByRole('row');
         const rowsBoundaries = getRowBoundaries(rows);

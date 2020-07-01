@@ -13,7 +13,6 @@ const getRowBoundaries = (rows: any[]) => {
 };
 
 describe('tbListComponent', () => {
-    
     it('should render initial state w/o problem', async () => {
         const { getByRole } = render(<TbListComponent />);
         const table = getByRole('table');
@@ -25,7 +24,7 @@ describe('tbListComponent', () => {
         beforeEach(async () => {
             sut = render(<TbListComponent />);
             const table = getByRole(sut.container, 'table');
-            await waitFor(()=> expect(table).toBeDefined());
+            await waitFor(() => expect(table).toBeDefined());
         });
 
         it('should go to page 2', async () => {
@@ -33,7 +32,7 @@ describe('tbListComponent', () => {
 
             fireEvent.click(nextPageBtn);
             const table = getByRole(sut.container, 'table');
-            await waitFor(()=> expect(table).toBeDefined());
+            await waitFor(() => expect(table).toBeDefined());
 
             const rows = sut.queryAllByRole('row');
             const rowsBoundaries = getRowBoundaries(rows);

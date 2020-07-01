@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactDom from 'react-dom';
 import {
     ColumnModel,
     CompareOperators,
@@ -15,6 +14,8 @@ import { getLocalDataSource, getRemoteDataSource, tbId } from './helpers';
 import { ITbApi } from './types/ITbApi';
 import { ITbInstance } from './types/ITbInstance';
 import { ITbOptions } from './types/ITbOptions';
+import { actions } from './state/actions';
+import { tbReducer, tbInitialState } from './state/reducer';
 
 const createTbOptions = (tubularOptions?: Partial<ITbOptions>): ITbOptions => {
     const temp = tubularOptions || {};
@@ -48,136 +49,109 @@ export const useTubular = (
         initStorage.setGridName(componentName);
     }
 
-    const [isLoading, setIsLoading] = React.useState(false);
-    const [getColumns, setColumns] = React.useState<ColumnModel[]>(initColumns);
-    const [isStorageLoaded, setIsStorageLoaded] = React.useState(false);
-    const [getActiveColumn, setActiveColumn] = React.useState<ColumnModel>(null);
-    const [getItemsPerPage, setItemsPerPage] = React.useState<number>(pagination.itemsPerPage || 10);
-    const [getStorage] = React.useState<DataGridStorage>(initStorage);
-    const [getPage, setPage] = React.useState<number>(pagination.page || 0);
-    const [getSearchText, setSearchText] = React.useState<string>(searchText || '');
-    const [getError, setError] = React.useState(null);
-    const getAllRecords = source instanceof Array ? getLocalDataSource(source) : getRemoteDataSource(source);
-
-    const [getState, setState] = React.useState({
-        aggregate: null,
-        data: [],
-        filteredRecordCount: 0,
-        totalRecordCount: 0,
+    const [tbState, dispatch] = React.useReducer(tbReducer, {
+        ...tbInitialState,
+        columns: initColumns,
+        page: pagination.page || 0,
+        itemsPerPage: pagination.itemsPerPage || 10,
+        searchText: searchText || '',
     });
+    const [getStorage] = React.useState<DataGridStorage>(initStorage);
+    const getAllRecords = source instanceof Array ? getLocalDataSource(source) : getRemoteDataSource(source);
 
     const api: ITbApi = {
         exportTo: async (allRows: boolean, exportFunc: (payload: any[], columns: ColumnModel[]) => void) => {
-            if (getState.filteredRecordCount === 0) {
+            if (tbState.filteredRecordCount === 0) {
                 return;
             }
 
             const payload = allRows
-                ? (await getAllRecords(new GridRequest(getColumns, -1, 0, getSearchText))).payload
-                : getState.data;
+                ? (await getAllRecords(new GridRequest(tbState.columns, -1, 0, tbState.searchText))).payload
+                : tbState.data;
 
-            exportFunc(payload, getColumns);
+            exportFunc(payload, tbState.columns);
         },
         goToPage: (page: number) => {
-            if (getPage !== page) {
-                setPage(page);
-            }
-        },
-        handleFilterChange: (filterText: string, filterOperator: CompareOperators, filterArgument?: any[]) => {
-            setActiveColumn({
-                ...getActiveColumn,
-                filterText,
-                filterOperator,
-                filterArgument,
-            });
+            dispatch(actions.goToPage(page));
         },
         processRequest: async () => {
-            setIsLoading(true);
+            dispatch(actions.startRequest());
 
             try {
-                const request = new GridRequest(getColumns, getItemsPerPage, getPage, getSearchText);
+                const request = new GridRequest(
+                    tbState.columns,
+                    tbState.itemsPerPage,
+                    tbState.page,
+                    tbState.searchText,
+                );
                 const response: GridResponse = await getAllRecords(request);
 
-                const maxPage = Math.ceil(response.totalRecordCount / getItemsPerPage);
+                const maxPage = Math.ceil(response.totalRecordCount / tbState.itemsPerPage);
                 let currentPage = response.currentPage > maxPage ? maxPage : response.currentPage;
                 currentPage = currentPage === 0 ? 0 : currentPage - 1;
 
-                // TODO: Check this won't case an issue
-                ReactDom.unstable_batchedUpdates(() => {
-                    getStorage.setPage(currentPage);
-                    getStorage.setColumns(getColumns);
-                    getStorage.setTextSearch(getSearchText);
-
-                    setState({
+                dispatch(
+                    actions.requestDone({
+                        page: currentPage,
                         aggregate: response.aggregationPayload,
                         data: response.payload,
                         filteredRecordCount: response.filteredRecordCount || 0,
                         totalRecordCount: response.totalRecordCount || 0,
-                    });
-
-                    setIsLoading(false);
-                    setError(null);
-                    setPage(currentPage);
-                });
+                        columns: tbState.columns,
+                        error: null,
+                        searchText: tbState.searchText,
+                    }),
+                );
             } catch (err) {
                 if (callbacks.onError) {
                     callbacks.onError(err);
                 }
 
-                setIsLoading(false);
-                setError(err);
+                dispatch(actions.requestError(err));
             }
         },
-        setActiveColumn,
-        setColumns,
-        setFilter: (filterText: string, filterOperator: CompareOperators, filterArgument?: any[]) => {
-            const columns = [...getColumns];
-            const column = columns.find((c: ColumnModel) => c.name === getActiveColumn.name);
-            if (!column) {
-                return;
-            }
-            column.filterText = filterText;
-            column.filterOperator = filterOperator;
-            column.filterArgument = filterArgument;
-
-            setColumns([...columns]);
-        },
+        setColumns: (columns: ColumnModel[]) => dispatch(actions.setColumns(columns)),
         sortColumn: (property: string, multiSort = false) => {
-            const columns = sortColumnArray(property, [...getColumns], multiSort);
+            const columns = sortColumnArray(property, [...tbState.columns], multiSort);
 
-            setColumns(columns);
+            dispatch(actions.setColumns(columns));
         },
-        updateItemPerPage: (itemsPerPage: number) => {
-            if (getItemsPerPage !== itemsPerPage) {
-                setItemsPerPage(itemsPerPage);
+        updateItemsPerPage: (itemsPerPage: number) => {
+            if (tbState.itemsPerPage !== itemsPerPage) {
+                dispatch(actions.updateItemsPerPage(itemsPerPage));
             }
         },
         updateSearchText: (value: string) => {
-            if (getSearchText !== value) {
-                setSearchText(value);
+            if (tbState.searchText !== value) {
+                dispatch(actions.updateSearchText(searchText));
             }
         },
     };
 
-    let dependencies = [getColumns, getPage, getSearchText, getItemsPerPage, source];
+    let dependencies = [tbState.columns, tbState.page, tbState.searchText, tbState.itemsPerPage, source];
 
     if (deps) {
         dependencies = dependencies.concat(deps);
     }
 
     const initGrid = () => {
+        const initData = {
+            page: tbState.page,
+            searchText: tbState.searchText,
+            columns: tbState.columns,
+        };
         if (getStorage.getPage()) {
-            setPage(getStorage.getPage());
+            initData.page = getStorage.getPage();
         }
 
         if (getStorage.getTextSearch()) {
-            setSearchText(getStorage.getTextSearch());
+            initData.searchText = getStorage.getTextSearch();
         }
 
         const storedColumns = getStorage.getColumns();
 
         if (storedColumns) {
-            const columns = [...getColumns];
+            const columns = [...tbState.columns];
 
             storedColumns.forEach((column: ColumnModel) => {
                 const currentColumn = columns.find((col: ColumnModel) => col.name === column.name);
@@ -197,38 +171,25 @@ export const useTubular = (
                 currentColumn.filterArgument = column.filterArgument;
             });
 
-            setColumns(columns);
+            initData.columns = columns;
         }
 
-        setIsStorageLoaded(true);
+        dispatch(actions.initGridFromStorage(initData));
     };
 
-    if (!isStorageLoaded) {
+    if (!tbState.initialized) {
         initGrid();
     }
 
     React.useEffect(() => {
-        if (!isLoading) {
+        if (!tbState.isLoading) {
             api.processRequest();
         }
     }, dependencies);
 
     React.useEffect(() => {
-        setColumns(initColumns);
+        dispatch(actions.setColumns(initColumns));
     }, [initColumns]);
 
-    const state = {
-        ...getState,
-        activeColumn: getActiveColumn,
-        columns: getColumns,
-        error: getError,
-        initialized: isStorageLoaded,
-        isLoading,
-        itemsPerPage: getItemsPerPage,
-        page: getPage,
-        searchText: getSearchText,
-        storage: getStorage,
-    };
-
-    return { state, api };
+    return { state: tbState, api };
 };
