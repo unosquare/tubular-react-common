@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactDom from 'react-dom';
 import {
     ColumnModel,
     CompareOperators,
@@ -15,8 +14,8 @@ import { getLocalDataSource, getRemoteDataSource, tbId } from './helpers';
 import { ITbApi } from './types/ITbApi';
 import { ITbInstance } from './types/ITbInstance';
 import { ITbOptions } from './types/ITbOptions';
-import { ITbState } from './types';
 import { actions } from './state/actions';
+import { tbReducer, tbInitialState } from './state/reducer';
 
 const createTbOptions = (tubularOptions?: Partial<ITbOptions>): ITbOptions => {
     const temp = tubularOptions || {};
@@ -50,7 +49,13 @@ export const useTubular = (
         initStorage.setGridName(componentName);
     }
 
-    const [tbState, dispatch] = React.useReducer(tbReducer, initialState);
+    const [tbState, dispatch] = React.useReducer(tbReducer, {
+        ...tbInitialState,
+        columns: initColumns,
+        page: pagination.page || 0,
+        itemsPerPage: pagination.itemsPerPage || 10,
+        searchText: searchText || '',
+    });
     const [getStorage] = React.useState<DataGridStorage>(initStorage);
     const getAllRecords = source instanceof Array ? getLocalDataSource(source) : getRemoteDataSource(source);
 
@@ -172,7 +177,7 @@ export const useTubular = (
         dispatch(actions.initGridFromStorage(initData));
     };
 
-    if (!tbState.isStorageLoaded) {
+    if (!tbState.initialized) {
         initGrid();
     }
 
@@ -186,5 +191,5 @@ export const useTubular = (
         dispatch(actions.setColumns(initColumns));
     }, [initColumns]);
 
-    return { tbState, api };
+    return { state: tbState, api };
 };

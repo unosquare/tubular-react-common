@@ -1,6 +1,6 @@
 import { ITbState } from '../types';
 import * as Actions from './actions';
-const initialState: ITbState = {
+export const tbInitialState: ITbState = {
     aggregate: {},
     data: [],
     columns: [],
@@ -15,12 +15,31 @@ const initialState: ITbState = {
     totalRecordCount: -1,
 };
 
-export const tbReducer = (state: ITbState = initialState, action: Actions.Actions) => {
+export const tbReducer = (state: ITbState = tbInitialState, action: Actions.Actions): ITbState => {
     switch (action.type) {
         case Actions.GOTO_PAGE: {
-            if (state.page !== action.payload) {
-                return { ...state, page: action.payload };
-            }
+            return { ...state, page: action.payload };
+        }
+        case Actions.START_REQUEST: {
+            return { ...state, isLoading: true };
+        }
+        case Actions.INIT_GRID_FROM_STORAGE: {
+            return { ...state, ...action.payload, initialized: true };
+        }
+        case Actions.REQUEST_ERROR: {
+            return { ...state, error: action.payload, isLoading: false };
+        }
+        case Actions.REQUEST_SUCCESS: {
+            return { ...state, ...action.payload, isLoading: false };
+        }
+        case Actions.SET_COLUMNS: {
+            return { ...state, columns: action.payload };
+        }
+        case Actions.UPDATE_ITEMS_PER_PAGE: {
+            return { ...state, itemsPerPage: action.payload };
+        }
+        case Actions.UPDATE_SEARCH_TEXT: {
+            return { ...state, searchText: action.payload };
         }
         default:
             return state;

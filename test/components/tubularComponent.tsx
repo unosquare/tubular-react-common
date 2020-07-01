@@ -16,25 +16,24 @@ export const TubularComponent = () => {
                 <thead>
                     <tr role="rowheader">
                         {state.columns
-                            .filter(col => col.visible)
-                            .map(col => <th key={col.name}>{col.label}</th>)
-                        }
+                            .filter((col) => col.visible)
+                            .map((col) => (
+                                <th key={col.name}>{col.label}</th>
+                            ))}
                     </tr>
                 </thead>
                 <tbody>
-                    {state.data.map((row, index) =>
+                    {state.data.map((row, index) => (
                         <tr key={index}>
-                                {state.columns
-                                    .filter(col => col.visible)
-                                    .map(col =>
-                                        (
-                                            <td role="cell" key={col.name}>
-                                                {row[col.name]}
-                                            </td>
-                                        )
-                                    )}
-                            </tr>
-                        )}
+                            {state.columns
+                                .filter((col) => col.visible)
+                                .map((col) => (
+                                    <td role="cell" key={col.name}>
+                                        {row[col.name]}
+                                    </td>
+                                ))}
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </>
