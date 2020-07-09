@@ -123,7 +123,7 @@ export const useTubular = (
         },
         updateSearchText: (value: string) => {
             if (tbState.searchText !== value) {
-                dispatch(actions.updateSearchText(searchText));
+                dispatch(actions.updateSearchText(value));
             }
         },
     };
