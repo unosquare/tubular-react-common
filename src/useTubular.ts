@@ -10,7 +10,7 @@ import {
     sortColumnArray,
     TubularHttpClientAbstract,
 } from 'tubular-common';
-import { getLocalDataSource, getRemoteDataSource, tbId } from './helpers';
+import { getLocalDataSource, tbId, getRemoteDataSource } from './helpers';
 import { ITbApi } from './types/ITbApi';
 import { ITbInstance } from './types/ITbInstance';
 import { ITbOptions } from './types/ITbOptions';
@@ -57,7 +57,9 @@ export const useTubular = (
         searchText: searchText || '',
     });
     const [getStorage] = React.useState<DataGridStorage>(initStorage);
-    const getAllRecords = source instanceof Array ? getLocalDataSource(source) : getRemoteDataSource(source);
+    const getAllRecords = React.useCallback(() => {
+        return source instanceof Array ? getLocalDataSource(source) : getRemoteDataSource(source);
+    }, [source]);
 
     const api: ITbApi = {
         exportTo: async (allRows: boolean, exportFunc: (payload: any[], columns: ColumnModel[]) => void) => {
@@ -66,7 +68,7 @@ export const useTubular = (
             }
 
             const payload = allRows
-                ? (await getAllRecords(new GridRequest(tbState.columns, -1, 0, tbState.searchText))).payload
+                ? (await getAllRecords()(new GridRequest(tbState.columns, -1, 0, tbState.searchText))).payload
                 : tbState.data;
 
             exportFunc(payload, tbState.columns);
@@ -84,7 +86,7 @@ export const useTubular = (
                     tbState.page,
                     tbState.searchText,
                 );
-                const response: GridResponse = await getAllRecords(request);
+                const response: GridResponse = await getAllRecords()(request);
 
                 const maxPage = Math.ceil(response.totalRecordCount / tbState.itemsPerPage);
                 let currentPage = response.currentPage > maxPage ? maxPage : response.currentPage;
@@ -128,11 +130,9 @@ export const useTubular = (
         },
     };
 
-    let dependencies = [tbState.columns, tbState.page, tbState.searchText, tbState.itemsPerPage, source];
-
-    if (deps) {
-        dependencies = dependencies.concat(deps);
-    }
+    const memoDeps = React.useMemo(() => {
+        return deps ? [...deps] : [];
+    }, [deps]);
 
     const initGrid = () => {
         const initData = {
@@ -177,12 +177,39 @@ export const useTubular = (
         dispatch(actions.initGridFromStorage(initData));
     };
 
-    if (!tbState.initialized) {
-        initGrid();
-    }
+    const dependencies = React.useMemo(() => {
+        let tubularDeps = [
+            tbState.columns,
+            tbState.page,
+            tbState.searchText,
+            tbState.itemsPerPage,
+            tbState.initialized,
+            source,
+        ];
+
+        if (deps) {
+            tubularDeps = tubularDeps.concat(deps);
+        }
+
+        return tubularDeps;
+    }, [
+        tbState.columns,
+        tbState.page,
+        tbState.searchText,
+        tbState.itemsPerPage,
+        tbState.initialized,
+        source,
+        ...memoDeps,
+    ]);
 
     React.useEffect(() => {
-        if (!tbState.isLoading) {
+        if (!tbState.initialized) {
+            initGrid();
+        }
+    }, []);
+
+    React.useEffect(() => {
+        if (!tbState.isLoading && tbState.initialized) {
             api.processRequest();
         }
     }, dependencies);
@@ -191,5 +218,10 @@ export const useTubular = (
         dispatch(actions.setColumns(initColumns));
     }, [initColumns]);
 
-    return { state: tbState, api };
+    const tbInstance = {
+        state: tbState,
+        api: React.useMemo(() => api, []),
+    };
+
+    return tbInstance;
 };
