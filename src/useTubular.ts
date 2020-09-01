@@ -220,7 +220,7 @@ export const useTubular = (
 
     const tbInstance = {
         state: tbState,
-        api: React.useMemo(() => api, []),
+        api,
     };
 
     return tbInstance;
