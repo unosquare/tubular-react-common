@@ -16,6 +16,7 @@ import { ITbInstance } from './types/ITbInstance';
 import { ITbOptions } from './types/ITbOptions';
 import { actions } from './state/actions';
 import { tbReducer, tbInitialState } from './state/reducer';
+import { useGridRefresh } from './useGridRefresh';
 
 const createTbOptions = (tubularOptions?: Partial<ITbOptions>): ITbOptions => {
     const temp = tubularOptions || {};
@@ -57,6 +58,7 @@ export const useTubular = (
         searchText: searchText || '',
     });
     const [getStorage] = React.useState<DataGridStorage>(initStorage);
+    const [refresh, forceRefresh] = useGridRefresh();
     const getAllRecords = React.useCallback(() => {
         return source instanceof Array ? getLocalDataSource(source) : getRemoteDataSource(source);
     }, [source]);
@@ -112,6 +114,7 @@ export const useTubular = (
                 dispatch(actions.requestError(err));
             }
         },
+        reloadGrid: () => forceRefresh(),
         setColumns: (columns: ColumnModel[]) => dispatch(actions.setColumns(columns)),
         sortColumn: (property: string, multiSort = false) => {
             const columns = sortColumnArray(property, [...tbState.columns], multiSort);
@@ -184,6 +187,7 @@ export const useTubular = (
             tbState.searchText,
             tbState.itemsPerPage,
             tbState.initialized,
+            refresh,
             source,
         ];
 
@@ -198,6 +202,7 @@ export const useTubular = (
         tbState.searchText,
         tbState.itemsPerPage,
         tbState.initialized,
+        refresh,
         source,
         ...memoDeps,
     ]);
