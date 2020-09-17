@@ -4,6 +4,7 @@ export interface ITbApi {
     exportTo: (allRows: boolean, exportFunc: (payload: any[], columns: ColumnModel[]) => void) => void;
     goToPage: (page: number) => void;
     processRequest: () => void;
+    reloadGrid: () => void;
     setColumns: (columns: ColumnModel[]) => void;
     sortColumn: (columnName: string, multiSort?: boolean) => void;
     updateItemsPerPage: (itemsPerPage: number) => void;
