@@ -58,7 +58,9 @@ export const useTubular = (
         searchText: searchText || '',
     });
     const [getStorage] = React.useState<DataGridStorage>(initStorage);
-    const [refresh, forceRefresh] = useGridRefresh();
+    const [refresh, setRefresh] = React.useState(0);
+    const forceRefresh = () => setRefresh((refresh) => refresh + 1);
+
     const getAllRecords = React.useCallback(() => {
         return source instanceof Array ? getLocalDataSource(source) : getRemoteDataSource(source);
     }, [source]);
