@@ -16,7 +16,6 @@ import { ITbInstance } from './types/ITbInstance';
 import { ITbOptions } from './types/ITbOptions';
 import { actions } from './state/actions';
 import { tbReducer, tbInitialState } from './state/reducer';
-import { useGridRefresh } from './useGridRefresh';
 
 const createTbOptions = (tubularOptions?: Partial<ITbOptions>): ITbOptions => {
     const temp = tubularOptions || {};
@@ -116,7 +115,13 @@ export const useTubular = (
                 dispatch(actions.requestError(err));
             }
         },
-        reloadGrid: () => forceRefresh(),
+        reloadGrid: (resetPage = false) => {
+            if (resetPage) {
+                dispatch(actions.goToPage(0));
+            }
+
+            forceRefresh();
+        },
         setColumns: (columns: ColumnModel[]) => dispatch(actions.setColumns(columns)),
         sortColumn: (property: string, multiSort = false) => {
             const columns = sortColumnArray(property, [...tbState.columns], multiSort);
@@ -134,10 +139,6 @@ export const useTubular = (
             }
         },
     };
-
-    const memoDeps = React.useMemo(() => {
-        return deps ? [...deps] : [];
-    }, [deps]);
 
     const initGrid = () => {
         const initData = {
@@ -182,33 +183,7 @@ export const useTubular = (
         dispatch(actions.initGridFromStorage(initData));
     };
 
-    const dependencies = React.useMemo(() => {
-        let tubularDeps = [
-            tbState.columns,
-            tbState.page,
-            tbState.searchText,
-            tbState.itemsPerPage,
-            tbState.initialized,
-            refresh,
-            source,
-        ];
-
-        if (deps) {
-            tubularDeps = tubularDeps.concat(deps);
-        }
-
-        return tubularDeps;
-    }, [
-        tbState.columns,
-        tbState.page,
-        tbState.searchText,
-        tbState.itemsPerPage,
-        tbState.initialized,
-        refresh,
-        source,
-        ...memoDeps,
-    ]);
-
+    const extraDependencies = deps ? deps : [];
     React.useEffect(() => {
         if (!tbState.initialized) {
             initGrid();
@@ -219,7 +194,16 @@ export const useTubular = (
         if (!tbState.isLoading && tbState.initialized) {
             api.processRequest();
         }
-    }, dependencies);
+    }, [
+        tbState.columns,
+        tbState.page,
+        tbState.searchText,
+        tbState.itemsPerPage,
+        tbState.initialized,
+        refresh,
+        source,
+        ...extraDependencies,
+    ]);
 
     React.useEffect(() => {
         dispatch(actions.setColumns(initColumns));
