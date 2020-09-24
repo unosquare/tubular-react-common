@@ -33,13 +33,13 @@ export const tbReducer = (state: ITbState = tbInitialState, action: Actions.Acti
             return { ...state, ...action.payload, isLoading: false };
         }
         case Actions.SET_COLUMNS: {
-            return { ...state, columns: action.payload };
+            return { ...state, page: 0, columns: action.payload };
         }
         case Actions.UPDATE_ITEMS_PER_PAGE: {
             return { ...state, itemsPerPage: action.payload };
         }
         case Actions.UPDATE_SEARCH_TEXT: {
-            return { ...state, searchText: action.payload };
+            return { ...state, page: 0, searchText: action.payload };
         }
         default:
             return state;

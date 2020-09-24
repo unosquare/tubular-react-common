@@ -115,6 +115,19 @@ describe('Sorting', () => {
         expect(getLocalDataSourceSpy).toHaveBeenCalledTimes(1);
     });
 
+    it('should reload the grid', async () => {
+        const refreshBtn = sut.getByText('Refresh');
+
+        fireEvent.click(refreshBtn);
+        await waitFor(() => expect(queryByRole(sut.container, 'table')).toBeDefined());
+
+        const rows = sut.queryAllByRole('row');
+        expect(rows).toHaveLength(10);
+
+        expectFirstPage(rows);
+        expect(getLocalDataSourceSpy).toHaveBeenCalledTimes(2);
+    });
+
     describe('Sorting Asc & Desc', () => {
         it('should sort by CustomerName ASC', async () => {
             const sortBtn = sut.getByText('Sort by Customer Name');
