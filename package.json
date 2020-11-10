@@ -44,7 +44,7 @@
         "globals": {
             "ts-jest": {
                 "diagnostics": false,
-                "tsConfig": "tsconfig.json"
+                "tsconfig": "tsconfig.json"
             }
         },
         "coverageThreshold": {
@@ -70,7 +70,7 @@
     },
     "homepage": "https://github.com/unosquare/tubular-react-common#readme",
     "dependencies": {
-        "tubular-common": "^4.2.4"
+        "tubular-common": "^4.2.5"
     },
     "devDependencies": {
         "@testing-library/jest-dom": "^5.11.5",
