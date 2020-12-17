@@ -71,7 +71,7 @@ export const useTubular = (
             }
 
             const payload = allRows
-                ? (await getAllRecords()(new GridRequest(tbState.columns, -1, 0, tbState.searchText))).payload
+                ? (await getAllRecords()(new GridRequest(tbState.columns, 0, 0, tbState.searchText))).payload
                 : tbState.data;
 
             exportFunc(payload, tbState.columns);
