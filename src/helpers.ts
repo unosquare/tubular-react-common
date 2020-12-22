@@ -9,6 +9,7 @@ import {
     TubularHttpClient,
     Transformer,
 } from 'tubular-common';
+import camelcase from 'camelcase'
 
 let id = 0;
 
@@ -73,15 +74,17 @@ function exportFile(gridResult: [], columns: ColumnModel[], gridName: string): v
         type: 'text/csv;charset=utf-8;',
     });
 
+    const fileName = camelcase(gridName)
+    
     if (navigator.msSaveBlob) {
         // IE 10+
-        navigator.msSaveBlob(blob, `${gridName}.csv`);
+        navigator.msSaveBlob(blob, `${fileName}.csv`);
     } else {
         const fileURL = URL.createObjectURL(blob);
         const downloadLink = document.createElement('a');
         downloadLink.setAttribute('href', fileURL);
         downloadLink.setAttribute('id', 'download');
-        downloadLink.setAttribute('download', `${gridName}.csv`);
+        downloadLink.setAttribute('download', `${fileName}.csv`);
         document.body.appendChild(downloadLink);
         downloadLink.click();
         URL.revokeObjectURL(fileURL);
