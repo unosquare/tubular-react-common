@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, getAllByRole, RenderResult, fireEvent, waitFor, getByRole } from '@testing-library/react';
+import { render, getAllByRole, RenderResult, fireEvent, waitFor, getByRole, screen } from '@testing-library/react';
 import { TbListComponent } from './components/tbListComponent';
 
 const getRowBoundaries = (rows: any[]) => {
@@ -12,9 +12,10 @@ const getRowBoundaries = (rows: any[]) => {
     };
 };
 
-describe('tbListComponent', () => {
+describe('useTbList', () => {
     it('should render initial state w/o problem', async () => {
         const { getByRole } = render(<TbListComponent />);
+        await waitFor(() => expect(screen.queryByTestId("loader")).not.toBeInTheDocument());
         const table = getByRole('table');
         expect(table).toBeDefined();
     });
