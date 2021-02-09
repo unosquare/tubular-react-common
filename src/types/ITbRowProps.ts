@@ -1,5 +1,5 @@
-import { ColumnModel } from "tubular-common";
-import { ITbSelection } from "./ITbSelection";
+import { ColumnModel } from 'tubular-common';
+import { ITbSelection } from './ITbSelection';
 
 export interface ITbRowProps {
     row: any;

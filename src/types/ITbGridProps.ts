@@ -1,5 +1,5 @@
-import { ColumnModel, DataGridStorage, TubularHttpClientAbstract } from "tubular-common";
-import { ITbRowProps } from "./ITbRowProps";
+import { ColumnModel, DataGridStorage, TubularHttpClientAbstract } from 'tubular-common';
+import { ITbRowProps } from './ITbRowProps';
 
 export interface ITbGridProps {
     columns: ColumnModel[];
