@@ -12,6 +12,7 @@ export const TbListComponent = () => {
                 <button onClick={() => api.search('Microsoft')}>Search</button>
                 <button onClick={() => api.sortByColumn('CustomerName')}>Sort by Customer Name</button>
             </div>
+            {state.isLoading && <div data-testid="loader">Loading</div>}
             <table>
                 <thead>
                     <tr role="rowheader">
