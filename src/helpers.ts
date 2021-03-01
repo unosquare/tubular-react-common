@@ -52,12 +52,16 @@ export const generateOnRowClickProxy = (onRowClick: (row: Record<string, any>) =
     };
 };
 
-function printDoc(gridResult: [], columns: ColumnModel[], gridName: string): void {
+function printDoc(gridResult: [], columns: ColumnModel[], gridName: string, urlPrintCss: string): void {
     const tableHtml = getHtml(gridResult, columns);
 
     const documentToPrint = window.open('about:blank', 'Print', 'location=0,height=500,width=800');
+    let url = urlPrintCss
+    if (!url || url.length === 0) {
+        url = '//cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.min.css'
+    }
     documentToPrint.document.write(
-        '<link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.min.css" />',
+        `<link rel="stylesheet" href="${url}" />`,
     );
     documentToPrint.document.title = gridName;
     documentToPrint.document.write('<body onload="window.print();">');
@@ -91,10 +95,10 @@ function exportFile(gridResult: [], columns: ColumnModel[], gridName: string): v
     }
 }
 
-export const exportGrid = (media: string, gridResult: [], columns: ColumnModel[], gridName: string): void => {
+export const exportGrid = (media: string, gridResult: [], columns: ColumnModel[], gridName: string, urlPrintCss: string): void => {
     if (media === 'csv') {
         exportFile(gridResult, columns, gridName);
     } else {
-        printDoc(gridResult, columns, gridName);
+        printDoc(gridResult, columns, gridName, urlPrintCss);
     }
 };
