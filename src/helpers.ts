@@ -66,22 +66,28 @@ function printDoc(gridResult: [], columns: ColumnModel[], gridName: string): voi
     documentToPrint.document.close();
 }
 
-function exportFile(gridResult: [], columns: ColumnModel[]): void {
+function exportFile(gridResult: [], columns: ColumnModel[], gridName: string): void {
     const csvFile = getCsv(gridResult, columns);
 
     const blob = new Blob(['\uFEFF' + csvFile], {
         type: 'text/csv;charset=utf-8;',
     });
 
+    let fileName = 'data'
+    if (gridName) {
+        fileName = gridName.replace(/\\|\//g, '')           /* remove any problematic character (/ and \)in a path name */ 
+    }
+   
+    
     if (navigator.msSaveBlob) {
         // IE 10+
-        navigator.msSaveBlob(blob, 'data.csv');
+        navigator.msSaveBlob(blob, `${fileName}.csv`);
     } else {
         const fileURL = URL.createObjectURL(blob);
         const downloadLink = document.createElement('a');
         downloadLink.setAttribute('href', fileURL);
         downloadLink.setAttribute('id', 'download');
-        downloadLink.setAttribute('download', 'data.csv');
+        downloadLink.setAttribute('download', `${fileName}.csv`);
         document.body.appendChild(downloadLink);
         downloadLink.click();
         URL.revokeObjectURL(fileURL);
@@ -90,7 +96,7 @@ function exportFile(gridResult: [], columns: ColumnModel[]): void {
 
 export const exportGrid = (media: string, gridResult: [], columns: ColumnModel[], gridName: string): void => {
     if (media === 'csv') {
-        exportFile(gridResult, columns);
+        exportFile(gridResult, columns, gridName);
     } else {
         printDoc(gridResult, columns, gridName);
     }
