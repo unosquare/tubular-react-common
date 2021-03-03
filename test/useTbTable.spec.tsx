@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, fireEvent, getByText, waitFor, getByRole, getAllByRole } from '@testing-library/react';
+import { render, fireEvent, waitFor, getByRole, getAllByRole, screen } from '@testing-library/react';
 import { TbTableComponent } from './components/tbTableComponent';
 
 const getRowBoundaries = (rows: any[]) => {
@@ -12,9 +12,10 @@ const getRowBoundaries = (rows: any[]) => {
     };
 };
 
-describe('TbTableComponent', () => {
+describe('useTbTable', () => {
     it('should render initial state w/o problem', async () => {
         const { getByRole } = render(<TbTableComponent />);
+        await waitFor(() => expect(screen.queryByTestId("loader")).not.toBeInTheDocument());
         const table = getByRole('table');
         expect(table).toBeDefined();
     });
@@ -25,6 +26,7 @@ describe('TbTableComponent', () => {
         fireEvent.keyDown(container, { key: 'Control', code: 'Control' });
         fireEvent.keyUp(container, { key: 'Control', code: 'Control' });
 
+        await waitFor(() => expect(screen.queryByTestId("loader")).not.toBeInTheDocument());
         expect(container).toBeDefined();
     });
 
@@ -34,6 +36,7 @@ describe('TbTableComponent', () => {
         fireEvent.keyDown(container, { key: 'Enter', code: 'Enter' });
         fireEvent.keyUp(container, { key: 'Enter', code: 'Enter' });
 
+        await waitFor(() => expect(screen.queryByTestId("loader")).not.toBeInTheDocument());
         expect(container).toBeDefined();
     });
 
@@ -42,8 +45,8 @@ describe('TbTableComponent', () => {
         const sortBtn = sut.getByText('Sort by Customer Name');
 
         fireEvent.click(sortBtn);
+        await waitFor(() => expect(screen.queryByTestId("loader")).not.toBeInTheDocument());
         const table = getByRole(sut.container, 'table');
-        await waitFor(() => expect(table).toBeDefined());
 
         const rows = sut.queryAllByRole('row');
         const rowsBoundaries = getRowBoundaries(rows);

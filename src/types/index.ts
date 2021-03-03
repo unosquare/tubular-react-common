@@ -8,3 +8,6 @@ export * from './ITbOptions';
 export * from './ITbPagination';
 export * from './ITbState';
 export * from './ITbTableInstance';
+export * from './ITbSelection';
+export * from './ITbRowProps';
+export * from './ITbGridProps';
