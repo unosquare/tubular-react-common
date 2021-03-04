@@ -73,27 +73,27 @@ function exportFile(gridResult: [], columns: ColumnModel[], gridName: string): v
         type: 'text/csv;charset=utf-8;',
     });
 
-    let fileName = 'data'
+    let fileName = 'data.csv'
     if (gridName) {
-        fileName = gridName.replace(/\\|\//g, '')           /* remove any problematic character (/ and \) in a path name */ 
+        fileName = `${gridName.replace(/\\|\//g, '')}.csv`; 
     }
     
     if (navigator.msSaveBlob) {
         // IE 10+
-        navigator.msSaveBlob(blob, `${fileName}.csv`);
+        navigator.msSaveBlob(blob, fileName);
     } else {
         const fileURL = URL.createObjectURL(blob);
         const downloadLink = document.createElement('a');
         downloadLink.setAttribute('href', fileURL);
         downloadLink.setAttribute('id', 'download');
-        downloadLink.setAttribute('download', `${fileName}.csv`);
+        downloadLink.setAttribute('download', fileName);
         document.body.appendChild(downloadLink);
         downloadLink.click();
         URL.revokeObjectURL(fileURL);
     }
 }
 
-export const exportGrid = (media: string, gridResult: [], columns: ColumnModel[], gridName: string): void => {
+export const exportGrid = (media: string, gridResult: [], columns: ColumnModel[], gridName: string = ''): void => {
     if (media === 'csv') {
         exportFile(gridResult, columns, gridName);
     } else {
