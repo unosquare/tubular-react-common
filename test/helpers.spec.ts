@@ -31,18 +31,49 @@ describe('generateOnRowClickProxy', () => {
 });
 
 describe('exportGrid', () => {
+
+    afterEach(() => {
+        if (document.body.childNodes.length > 0) {
+            document.body.childNodes.forEach(aNode => {
+                document.body.removeChild(aNode)
+            })
+        }
+    })
+
     it('Should simulate exportFile', () => {
         const mockCreateObjectURL = jest.fn();
         const mockRevokeObjectURL = jest.fn();
 
         URL.createObjectURL = mockCreateObjectURL;
         URL.revokeObjectURL = mockRevokeObjectURL;
-
+        
         exportGrid('csv', [], simpleRequest.columns, 'Test');
-
+        
+        expect(document.body.childNodes.length).toBe(1);
+        const nodeA = document.body.childNodes[0]
+        expect(nodeA).toBeInstanceOf(HTMLAnchorElement);
+        expect(nodeA).toHaveAttribute('download');
+        expect(nodeA).toHaveProperty('download', 'Test.csv');
+       
         expect(mockCreateObjectURL.mock.calls.length).toBe(1);
         expect(mockRevokeObjectURL.mock.calls.length).toBe(1);
     });
+
+    test('Should simultate exportFile with composed grid name', () => {
+
+        exportGrid('csv', [], simpleRequest.columns, 'Composed test');
+        expect(document.body.childNodes.length).toBe(1);
+        expect(document.body.childNodes[0]).toHaveProperty('download', 'Composed test.csv');
+
+    })
+
+    test('Should simultate exportFile with composed and slash grid name', () => {
+
+        exportGrid('csv', [], simpleRequest.columns, 'A slash between after/and/before test');
+        expect(document.body.childNodes.length).toBe(1);
+        expect(document.body.childNodes[0]).toHaveProperty('download', 'A slash between afterandbefore test.csv');
+
+    })
 
     it('Should simulate exportFile with IE 10+', () => {
         const mockMsSaveBlob = jest.fn();

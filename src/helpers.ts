@@ -75,9 +75,8 @@ function exportFile(gridResult: [], columns: ColumnModel[], gridName: string): v
 
     let fileName = 'data'
     if (gridName) {
-        fileName = gridName.replace(/\\|\//g, '')           /* remove any problematic character (/ and \)in a path name */ 
+        fileName = gridName.replace(/\\|\//g, '')           /* remove any problematic character (/ and \) in a path name */ 
     }
-   
     
     if (navigator.msSaveBlob) {
         // IE 10+
