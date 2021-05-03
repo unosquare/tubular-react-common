@@ -14,15 +14,13 @@ let id = 0;
 
 export const tbId = (): string => `tbComponent_${id++}`;
 
-export const getLocalDataSource = (source: any[]) => (request: GridRequest): Promise<GridResponse> => {
-    return new Promise((resolve, reject) => {
+export const getLocalDataSource = (source: any[]) => (request: GridRequest): Promise<GridResponse> => new Promise((resolve, reject) => {
         try {
             resolve(Transformer.getResponse(request, source));
         } catch (error) {
             reject(error);
         }
     });
-};
 
 export const getRemoteDataSource = (request: string | Request | TubularHttpClientAbstract) => async (
     gridRequest: GridRequest,
@@ -43,13 +41,11 @@ export const getRemoteDataSource = (request: string | Request | TubularHttpClien
     return data;
 };
 
-export const generateOnRowClickProxy = (onRowClick: (row: Record<string, any>) => void) => {
-    return (row: Record<string, any>) => (): void => {
+export const generateOnRowClickProxy = (onRowClick: (row: Record<string, any>) => void) => (row: Record<string, any>) => (): void => {
         if (onRowClick) {
             onRowClick(row);
         }
     };
-};
 
 function printDoc(gridResult: [], columns: ColumnModel[], gridName: string): void {
     const tableHtml = getHtml(gridResult, columns);
@@ -69,7 +65,7 @@ function printDoc(gridResult: [], columns: ColumnModel[], gridName: string): voi
 function exportFile(gridResult: [], columns: ColumnModel[]): void {
     const csvFile = getCsv(gridResult, columns);
 
-    const blob = new Blob(['\uFEFF' + csvFile], {
+    const blob = new Blob([`\uFEFF${  csvFile}`], {
         type: 'text/csv;charset=utf-8;',
     });
 

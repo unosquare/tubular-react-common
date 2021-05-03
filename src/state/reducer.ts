@@ -1,5 +1,6 @@
 import { ITbState } from '../types';
 import * as Actions from './actions';
+
 export const tbInitialState: ITbState = {
     aggregate: {},
     data: [],

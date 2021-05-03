@@ -22,7 +22,7 @@ const createTbOptions = (tubularOptions?: Partial<ITbOptions>): ITbOptions => {
     return {
         callbacks: temp.callbacks || {
             onError: () => {
-                return;
+                // Empty
             },
         },
         componentName: temp.componentName || tbId(),
@@ -35,7 +35,8 @@ const createTbOptions = (tubularOptions?: Partial<ITbOptions>): ITbOptions => {
         storage: (temp.componentName && temp.storage) || new NullStorage(),
     };
 };
-export const useTubular = (
+
+const useTubular = (
     initColumns: ColumnModel[],
     source: any[] | string | Request | TubularHttpClientAbstract,
     tubularOptions?: Partial<ITbOptions>,
@@ -58,11 +59,12 @@ export const useTubular = (
     });
     const [getStorage] = React.useState<DataGridStorage>(initStorage);
     const [refresh, setRefresh] = React.useState(0);
-    const forceRefresh = () => setRefresh((refresh) => refresh + 1);
+    const forceRefresh = () => setRefresh((x) => x + 1);
 
-    const getAllRecords = React.useCallback(() => {
-        return source instanceof Array ? getLocalDataSource(source) : getRemoteDataSource(source);
-    }, [source]);
+    const getAllRecords = React.useCallback(
+        () => (source instanceof Array ? getLocalDataSource(source) : getRemoteDataSource(source)),
+        [source],
+    );
 
     const api: ITbApi = {
         exportTo: async (allRows: boolean, exportFunc: (payload: any[], columns: ColumnModel[]) => void) => {
@@ -183,7 +185,7 @@ export const useTubular = (
         dispatch(actions.initGridFromStorage(initData));
     };
 
-    const extraDependencies = deps ? deps : [];
+    const extraDependencies = deps || [];
     React.useEffect(() => {
         if (!tbState.initialized) {
             initGrid();
@@ -216,3 +218,5 @@ export const useTubular = (
 
     return tbInstance;
 };
+
+export default useTubular;

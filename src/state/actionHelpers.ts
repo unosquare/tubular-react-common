@@ -1,4 +1,4 @@
-/* tslint:disable:interface-over-type-literal*/
+/* tslint:disable:interface-over-type-literal */
 type FunctionType = (...args: any[]) => any;
 type ActionCreatorsMapObject = { [actionCreator: string]: FunctionType };
 

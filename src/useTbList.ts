@@ -3,9 +3,9 @@ import * as React from 'react';
 import { ColumnModel, TubularHttpClientAbstract } from 'tubular-common';
 import { ITbListInstance } from './types/ITbListInstance';
 import { ITbOptions } from './types/ITbOptions';
-import { useTubular } from './useTubular';
+import useTubular from './useTubular';
 
-export const useTbList = (
+const useTbList = (
     initColumns: ColumnModel[],
     source: any[] | string | Request | TubularHttpClientAbstract,
     tubularOptions?: Partial<ITbOptions>,
@@ -39,13 +39,11 @@ export const useTbList = (
     };
 
     React.useEffect(() => {
-        setListState((state) => {
-            return {
-                hasNextPage: state.items.length + tubular.state.data.length < tubular.state.filteredRecordCount,
-                items: [...state.items].concat(...tubular.state.data),
-            };
-        });
-    }, [tubular.state.data]);
+        setListState((state) => ({
+            hasNextPage: state.items.length + tubular.state.data.length < tubular.state.filteredRecordCount,
+            items: [...state.items].concat(...tubular.state.data),
+        }));
+    }, [tubular.state.data, tubular.state.filteredRecordCount]);
 
     return {
         // API fort a list should be simpler than
@@ -64,3 +62,5 @@ export const useTbList = (
         },
     };
 };
+
+export default useTbList;

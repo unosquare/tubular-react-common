@@ -1,0 +1,18 @@
+{
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "paths": ["./src"]
+            }
+        }
+    },
+    "env": {
+        "es6": true,
+        "browser": true,
+        "jest": true
+    },
+    "extends": "eslint-config-unosquare",
+    "rules": {
+        "react-hooks/exhaustive-deps": 0
+    }
+}

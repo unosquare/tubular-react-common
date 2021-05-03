@@ -15,7 +15,7 @@ const createRowSelectionFromData = (data: any[], columns: ColumnModel[]) => {
     return newSelection;
 };
 
-export const useTbSelection = (tbInstance: ITbTableInstance, rowSelectionEnabled: boolean): ITbSelection => {
+const useTbSelection = (tbInstance: ITbTableInstance, rowSelectionEnabled: boolean): ITbSelection => {
     const [rowSelection, setRowSelection] = React.useState({} as any);
     const keyColumn = tbInstance.state.columns.find((c) => c.isKey);
     const toggleRowSelection = (id: string) => setRowSelection({ ...rowSelection, [id]: !rowSelection[id] });
@@ -32,16 +32,10 @@ export const useTbSelection = (tbInstance: ITbTableInstance, rowSelectionEnabled
     const toggleAllRowsSelection = () => {
         const newRowSelection = createRowSelectionFromData(tbInstance.state.data, tbInstance.state.columns);
         const unSelectedCount = Object.keys(rowSelection).filter((k) => !rowSelection[k]).length;
-
-        // all rows are selected
-        if (unSelectedCount === 0) {
-            Object.keys(rowSelection).forEach((f) => (newRowSelection[f] = false));
-            setRowSelection(newRowSelection);
-            return;
-        }
-
-        // Indeterminate | non-selected
-        Object.keys(rowSelection).forEach((f) => (newRowSelection[f] = true));
+        const update = unSelectedCount !== 0;
+        Object.keys(rowSelection).forEach((f) => {
+            newRowSelection[f] = update;
+        });
         setRowSelection(newRowSelection);
     };
 
@@ -50,7 +44,7 @@ export const useTbSelection = (tbInstance: ITbTableInstance, rowSelectionEnabled
             const newSelection = createRowSelectionFromData(tbInstance.state.data, tbInstance.state.columns);
             setRowSelection(newSelection);
         }
-    }, [tbInstance.state.data]);
+    }, [rowSelectionEnabled, tbInstance.state.data, tbInstance.state.columns]);
 
     return {
         rowSelection,
@@ -62,3 +56,5 @@ export const useTbSelection = (tbInstance: ITbTableInstance, rowSelectionEnabled
         isIndeterminateSelection,
     };
 };
+
+export default useTbSelection;

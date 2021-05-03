@@ -3,9 +3,9 @@ import * as React from 'react';
 import { ColumnModel, TubularHttpClientAbstract } from 'tubular-common';
 import { ITbOptions } from './types/ITbOptions';
 import { ITbTableInstance } from './types/ITbTableInstance';
-import { useTubular } from './useTubular';
+import useTubular from './useTubular';
 
-export const useTbTable = (
+const useTbTable = (
     initColumns: ColumnModel[],
     source: any[] | string | Request | TubularHttpClientAbstract,
     tubularOptions?: Partial<ITbOptions>,
@@ -13,17 +13,23 @@ export const useTbTable = (
     const tubular = useTubular(initColumns, source, tubularOptions);
     const [getMultiSort, setMultiSort] = React.useState(false);
 
-    const handleKeyDown = (event: any) => {
-        if (event.key === 'Control' && !getMultiSort) {
-            setMultiSort(true);
-        }
-    };
+    const handleKeyDown = React.useCallback(
+        (event: any) => {
+            if (event.key === 'Control' && !getMultiSort) {
+                setMultiSort(true);
+            }
+        },
+        [getMultiSort],
+    );
 
-    const handleKeyUp = (event: any) => {
-        if (event.key === 'Control' && getMultiSort) {
-            setMultiSort(false);
-        }
-    };
+    const handleKeyUp = React.useCallback(
+        (event: any) => {
+            if (event.key === 'Control' && getMultiSort) {
+                setMultiSort(false);
+            }
+        },
+        [getMultiSort],
+    );
 
     React.useEffect(() => {
         document.addEventListener('keydown', handleKeyDown);
@@ -33,7 +39,7 @@ export const useTbTable = (
             document.removeEventListener('keydown', handleKeyDown);
             document.removeEventListener('keyup', handleKeyUp);
         };
-    }, [getMultiSort]);
+    }, [getMultiSort, handleKeyDown, handleKeyUp]);
 
     return {
         api: {
@@ -45,3 +51,5 @@ export const useTbTable = (
         state: tubular.state,
     };
 };
+
+export default useTbTable;
