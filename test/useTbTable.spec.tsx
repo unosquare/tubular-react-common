@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import * as React from 'react';
 import { render, fireEvent, waitFor, getByRole, getAllByRole, screen } from '@testing-library/react';
 import { TbTableComponent } from './components/tbTableComponent';

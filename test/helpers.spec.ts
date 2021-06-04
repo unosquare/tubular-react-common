@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { getRemoteDataSource, getLocalDataSource, tbId } from '../src/helpers';
 import { exportGrid, generateOnRowClickProxy } from '../src';
 import { simpleRequest } from './mock';

@@ -1,10 +1,14 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import * as React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { TbTableComponent } from './components/tbTableComponent';
 
 describe('useTbSelection', () => {
     it('should select first row', async () => {
-        const { getByRole } = render(<TbTableComponent />);
+        render(<TbTableComponent />);
         await waitFor(() => expect(screen.queryByTestId("loader")).not.toBeInTheDocument());
 
         const selectFirstRowBtn = screen.getByText(/Select first row/);
@@ -14,7 +18,7 @@ describe('useTbSelection', () => {
     });
 
     it('should select and unselect first row', async () => {
-        const { getByRole } = render(<TbTableComponent />);
+        render(<TbTableComponent />);
         await waitFor(() => expect(screen.queryByTestId("loader")).not.toBeInTheDocument());
 
         const selectFirstRowBtn = screen.getByText(/Select first row/);

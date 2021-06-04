@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import * as React from 'react';
 import { render, fireEvent, getByText, getByTestId } from '@testing-library/react';
 import { MasterDetailsComponent } from './components/masterDetailsComponent';

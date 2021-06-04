@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import * as React from 'react';
 import { render, getAllByRole, RenderResult, fireEvent, waitFor, getByRole, screen } from '@testing-library/react';
 import { TbListComponent } from './components/tbListComponent';
