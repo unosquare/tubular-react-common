@@ -17,6 +17,30 @@ import { ITbOptions } from './types/ITbOptions';
 import { actions } from './state/actions';
 import { tbReducer, tbInitialState } from './state/reducer';
 
+const getCurrentPage = (response, tbState) =>{
+    const maxPage = Math.ceil(response.totalRecordCount / tbState.itemsPerPage);
+    let currentPage = response.currentPage > maxPage ? maxPage : response.currentPage;
+    return currentPage === 0 ? 0 : currentPage - 1;
+};
+
+const alignColumn = (columns) => (column: ColumnModel) => {
+    const currentColumn = columns.find((col: ColumnModel) => col.name === column.name);
+
+    if (!currentColumn) {
+        return;
+    }
+
+    currentColumn.visible = column.visible;
+
+    if (currentColumn.filterText !== null && column.filterOperator !== CompareOperators.None) {
+        return;
+    }
+
+    currentColumn.filterText = column.filterText;
+    currentColumn.filterOperator = column.filterOperator;
+    currentColumn.filterArgument = column.filterArgument;
+}
+
 const createTbOptions = (tubularOptions?: Partial<ITbOptions>): ITbOptions => {
     const temp = tubularOptions || {};
     return {
@@ -93,13 +117,9 @@ const useTubular = (
                 );
                 const response: GridResponse = await getAllRecords()(request);
 
-                const maxPage = Math.ceil(response.totalRecordCount / tbState.itemsPerPage);
-                let currentPage = response.currentPage > maxPage ? maxPage : response.currentPage;
-                currentPage = currentPage === 0 ? 0 : currentPage - 1;
-
                 dispatch(
                     actions.requestDone({
-                        page: currentPage,
+                        page: getCurrentPage(response, tbState),
                         aggregate: response.aggregationPayload,
                         data: response.payload,
                         filteredRecordCount: response.filteredRecordCount || 0,
@@ -161,23 +181,7 @@ const useTubular = (
         if (storedColumns) {
             const columns = [...tbState.columns];
 
-            storedColumns.forEach((column: ColumnModel) => {
-                const currentColumn = columns.find((col: ColumnModel) => col.name === column.name);
-
-                if (!currentColumn) {
-                    return;
-                }
-
-                currentColumn.visible = column.visible;
-
-                if (currentColumn.filterText !== null && column.filterOperator !== CompareOperators.None) {
-                    return;
-                }
-
-                currentColumn.filterText = column.filterText;
-                currentColumn.filterOperator = column.filterOperator;
-                currentColumn.filterArgument = column.filterArgument;
-            });
+            storedColumns.forEach(alignColumn(columns));
 
             initData.columns = columns;
         }
@@ -211,12 +215,10 @@ const useTubular = (
         dispatch(actions.setColumns(initColumns));
     }, [initColumns]);
 
-    const tbInstance = {
+    return {
         state: tbState,
         api,
     };
-
-    return tbInstance;
 };
 
 export default useTubular;

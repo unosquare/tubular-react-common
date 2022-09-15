@@ -48,15 +48,6 @@ describe('exportGrid', () => {
         expect(mockRevokeObjectURL.mock.calls.length).toBe(1);
     });
 
-    it('Should simulate exportFile with IE 10+', () => {
-        const mockMsSaveBlob = jest.fn();
-        navigator.msSaveBlob = mockMsSaveBlob;
-
-        exportGrid('csv', [], simpleRequest.columns, 'Test');
-
-        expect(mockMsSaveBlob.mock.calls.length).toBe(1);
-    });
-
     it('Should simulate printDoc with title=Test', () => {
         const myMock = jest.fn();
         const mockWindow = { document: { write: jest.fn(), close: jest.fn() } };

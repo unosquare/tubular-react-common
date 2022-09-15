@@ -12,7 +12,9 @@
         "jest": true
     },
     "extends": "eslint-config-unosquare",
+    "plugins": ["prettier"],
     "rules": {
-        "react-hooks/exhaustive-deps": 0
+        "react-hooks/exhaustive-deps": 0,
+        "default-param-last": 0
     }
 }
