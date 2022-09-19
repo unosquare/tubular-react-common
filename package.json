@@ -70,7 +70,7 @@
     },
     "homepage": "https://github.com/unosquare/tubular-react-common#readme",
     "dependencies": {
-        "tubular-common": "^5.0.49"
+        "tubular-common": "^5.0.50"
     },
     "devDependencies": {
         "@testing-library/jest-dom": "^5.16.5",
