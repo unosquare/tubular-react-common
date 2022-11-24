@@ -17,10 +17,58 @@ import { ITbOptions } from './types/ITbOptions';
 import { actions } from './state/actions';
 import { tbReducer, tbInitialState } from './state/reducer';
 
-const getCurrentPage = (response, tbState) =>{
+const getCurrentPage = (response, tbState) => {
     const maxPage = Math.ceil(response.totalRecordCount / tbState.itemsPerPage);
     let currentPage = response.currentPage > maxPage ? maxPage : response.currentPage;
     return currentPage === 0 ? 0 : currentPage - 1;
+};
+
+const processRequest = async (tbState, getAllRecords) => {
+    const request = new GridRequest(tbState.columns, tbState.itemsPerPage, tbState.page, tbState.searchText);
+    const response: GridResponse = await getAllRecords()(request);
+
+    return {
+        page: getCurrentPage(response, tbState),
+        aggregate: response.aggregationPayload,
+        data: response.payload,
+        filteredRecordCount: response.filteredRecordCount || 0,
+        totalRecordCount: response.totalRecordCount || 0,
+        columns: tbState.columns,
+        error: null,
+        searchText: tbState.searchText,
+    };
+};
+
+const exportRows = async (tbState, allRows, getAllRecords) =>
+    allRows
+        ? (await getAllRecords()(new GridRequest(tbState.columns, -1, 0, tbState.searchText))).payload
+        : tbState.data;
+
+const getInitData = (tbState, getStorage) => {
+    const initData = {
+        page: tbState.page,
+        searchText: tbState.searchText,
+        columns: tbState.columns,
+    };
+    if (getStorage.getPage()) {
+        initData.page = getStorage.getPage();
+    }
+
+    if (getStorage.getTextSearch()) {
+        initData.searchText = getStorage.getTextSearch();
+    }
+
+    const storedColumns = getStorage.getColumns();
+
+    if (storedColumns) {
+        const columns = [...tbState.columns];
+
+        storedColumns.forEach(alignColumn(columns));
+
+        initData.columns = columns;
+    }
+
+    return initData;
 };
 
 const alignColumn = (columns) => (column: ColumnModel) => {
@@ -39,7 +87,7 @@ const alignColumn = (columns) => (column: ColumnModel) => {
     currentColumn.filterText = column.filterText;
     currentColumn.filterOperator = column.filterOperator;
     currentColumn.filterArgument = column.filterArgument;
-}
+};
 
 const createTbOptions = (tubularOptions?: Partial<ITbOptions>): ITbOptions => {
     const temp = tubularOptions || {};
@@ -66,10 +114,9 @@ const useTubular = (
     tubularOptions?: Partial<ITbOptions>,
 ): ITbInstance => {
     const tbOptions = createTbOptions(tubularOptions);
-
     const { componentName, pagination, callbacks, storage, deps, searchText } = tbOptions;
-
     const initStorage = storage || new NullStorage();
+
     if (initStorage instanceof LocalStorage) {
         initStorage.setGridName(componentName);
     }
@@ -96,39 +143,14 @@ const useTubular = (
                 return;
             }
 
-            const payload = allRows
-                ? (await getAllRecords()(new GridRequest(tbState.columns, -1, 0, tbState.searchText))).payload
-                : tbState.data;
-
-            exportFunc(payload, tbState.columns);
+            exportFunc(await exportRows(tbState, allRows, getAllRecords), tbState.columns);
         },
-        goToPage: (page: number) => {
-            dispatch(actions.goToPage(page));
-        },
+        goToPage: (page: number) => dispatch(actions.goToPage(page)),
         processRequest: async () => {
             dispatch(actions.startRequest());
 
             try {
-                const request = new GridRequest(
-                    tbState.columns,
-                    tbState.itemsPerPage,
-                    tbState.page,
-                    tbState.searchText,
-                );
-                const response: GridResponse = await getAllRecords()(request);
-
-                dispatch(
-                    actions.requestDone({
-                        page: getCurrentPage(response, tbState),
-                        aggregate: response.aggregationPayload,
-                        data: response.payload,
-                        filteredRecordCount: response.filteredRecordCount || 0,
-                        totalRecordCount: response.totalRecordCount || 0,
-                        columns: tbState.columns,
-                        error: null,
-                        searchText: tbState.searchText,
-                    }),
-                );
+                dispatch(actions.requestDone(await processRequest(tbState, getAllRecords)));
             } catch (err) {
                 if (callbacks.onError) {
                     callbacks.onError(err);
@@ -145,11 +167,8 @@ const useTubular = (
             forceRefresh();
         },
         setColumns: (columns: ColumnModel[]) => dispatch(actions.setColumns(columns)),
-        sortColumn: (property: string, multiSort = false) => {
-            const columns = sortColumnArray(property, [...tbState.columns], multiSort);
-
-            dispatch(actions.setColumns(columns));
-        },
+        sortColumn: (property: string, multiSort = false) =>
+            dispatch(actions.setColumns(sortColumnArray(property, [...tbState.columns], multiSort))),
         updateItemsPerPage: (itemsPerPage: number) => {
             if (tbState.itemsPerPage !== itemsPerPage) {
                 dispatch(actions.updateItemsPerPage(itemsPerPage));
@@ -162,34 +181,9 @@ const useTubular = (
         },
     };
 
-    const initGrid = () => {
-        const initData = {
-            page: tbState.page,
-            searchText: tbState.searchText,
-            columns: tbState.columns,
-        };
-        if (getStorage.getPage()) {
-            initData.page = getStorage.getPage();
-        }
-
-        if (getStorage.getTextSearch()) {
-            initData.searchText = getStorage.getTextSearch();
-        }
-
-        const storedColumns = getStorage.getColumns();
-
-        if (storedColumns) {
-            const columns = [...tbState.columns];
-
-            storedColumns.forEach(alignColumn(columns));
-
-            initData.columns = columns;
-        }
-
-        dispatch(actions.initGridFromStorage(initData));
-    };
-
+    const initGrid = () => dispatch(actions.initGridFromStorage(getInitData(tbState, getStorage)));
     const extraDependencies = deps || [];
+
     React.useEffect(() => {
         if (!tbState.initialized) {
             initGrid();
