@@ -70,19 +70,19 @@
     },
     "homepage": "https://github.com/unosquare/tubular-react-common#readme",
     "dependencies": {
-        "tubular-common": "^5.0.59"
+        "tubular-common": "^5.0.60"
     },
     "devDependencies": {
         "@testing-library/jest-dom": "^5.16.5",
         "@testing-library/react": "^12.0.0",
         "@types/jest": "^27.0.1",
-        "eslint": "^8.28.0",
-        "eslint-config-unosquare": "^0.1.10",
+        "eslint": "^8.29.0",
+        "eslint-config-unosquare": "^0.1.11",
         "eslint-plugin-prettier": "^4.2.1",
         "jest": "^27.0.6",
-        "prettier": "^2.8.0",
+        "prettier": "^2.8.1",
         "ts-jest": "^27.0.5",
-        "typescript": "^4.9.3"
+        "typescript": "^4.9.4"
     },
     "peerDependencies": {
         "@types/react": "^18.0.17",
