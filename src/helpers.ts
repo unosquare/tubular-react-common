@@ -9,6 +9,7 @@ import {
     TubularHttpClient,
     Transformer,
 } from 'tubular-common';
+import striptags = require('striptags');
 
 let id = 0;
 
@@ -60,7 +61,7 @@ function printDoc(gridResult: [], columns: ColumnModel[], gridName: string): voi
     );
     documentToPrint.document.title = gridName;
     documentToPrint.document.write('<body onload="window.print();">');
-    documentToPrint.document.write(`<h1>${gridName}</h1>`);
+    documentToPrint.document.write(`<h1>${striptags(gridName)}</h1>`);
     documentToPrint.document.write(tableHtml);
     documentToPrint.document.write('</body>');
     documentToPrint.document.close();
