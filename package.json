@@ -76,7 +76,7 @@
         "@testing-library/jest-dom": "^5.16.5",
         "@testing-library/react": "^12.0.0",
         "@types/jest": "^27.0.1",
-        "eslint": "^8.30.0",
+        "eslint": "^8.31.0",
         "eslint-config-unosquare": "^0.1.12",
         "eslint-plugin-prettier": "^4.2.1",
         "jest": "^27.0.6",
