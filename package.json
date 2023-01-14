@@ -77,10 +77,10 @@
         "@testing-library/react": "^12.0.0",
         "@types/jest": "^27.0.1",
         "eslint": "^8.31.0",
-        "eslint-config-unosquare": "^0.1.12",
+        "eslint-config-unosquare": "^0.1.13",
         "eslint-plugin-prettier": "^4.2.1",
         "jest": "^27.0.6",
-        "prettier": "^2.8.1",
+        "prettier": "^2.8.3",
         "striptags": "^3.2.0",
         "ts-jest": "^27.0.5",
         "typescript": "^4.9.4"
