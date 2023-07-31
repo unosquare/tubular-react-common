@@ -9,7 +9,7 @@ import {
     TubularHttpClient,
     Transformer,
 } from 'tubular-common';
-import striptags = require('striptags');
+import * as striptags from 'striptags';
 
 let id = 0;
 
