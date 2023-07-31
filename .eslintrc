@@ -15,6 +15,7 @@
     "plugins": ["prettier"],
     "rules": {
         "react-hooks/exhaustive-deps": 0,
-        "default-param-last": 0
+        "default-param-last": 0,
+        "@typescript-eslint/no-explicit-any": 0,
     }
 }

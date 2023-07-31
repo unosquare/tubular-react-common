@@ -16,14 +16,15 @@ import { ITbInstance } from './types/ITbInstance';
 import { ITbOptions } from './types/ITbOptions';
 import { actions } from './state/actions';
 import { tbReducer, tbInitialState } from './state/reducer';
+import { ITbState } from './types';
 
-const getCurrentPage = (response, tbState) => {
+const getCurrentPage = (response: GridResponse, tbState: ITbState) => {
     const maxPage = Math.ceil(response.totalRecordCount / tbState.itemsPerPage);
-    let currentPage = response.currentPage > maxPage ? maxPage : response.currentPage;
+    const currentPage = response.currentPage > maxPage ? maxPage : response.currentPage;
     return currentPage === 0 ? 0 : currentPage - 1;
 };
 
-const processRequest = async (tbState, getAllRecords) => {
+const processRequest = async (tbState: ITbState, getAllRecords) => {
     const request = new GridRequest(tbState.columns, tbState.itemsPerPage, tbState.page, tbState.searchText);
     const response: GridResponse = await getAllRecords()(request);
 
@@ -39,10 +40,24 @@ const processRequest = async (tbState, getAllRecords) => {
     };
 };
 
-const exportRows = async (tbState, allRows, getAllRecords) =>
+const exportRows = async (tbState: ITbState, allRows, getAllRecords) =>
     allRows
         ? (await getAllRecords()(new GridRequest(tbState.columns, -1, 0, tbState.searchText))).payload
         : tbState.data;
+
+const alignColumn = (columns: any[]) => (column: ColumnModel) => {
+    const currentColumn = columns.find((col: ColumnModel) => col.name === column.name);
+
+    if (!currentColumn) return;
+
+    currentColumn.visible = column.visible;
+
+    if (currentColumn.filterText !== null && column.filterOperator !== CompareOperators.None) return;
+
+    currentColumn.filterText = column.filterText;
+    currentColumn.filterOperator = column.filterOperator;
+    currentColumn.filterArgument = column.filterArgument;
+};
 
 const getInitData = (tbState, getStorage) => {
     const initData = {
@@ -50,13 +65,9 @@ const getInitData = (tbState, getStorage) => {
         searchText: tbState.searchText,
         columns: tbState.columns,
     };
-    if (getStorage.getPage()) {
-        initData.page = getStorage.getPage();
-    }
+    if (getStorage.getPage()) initData.page = getStorage.getPage();
 
-    if (getStorage.getTextSearch()) {
-        initData.searchText = getStorage.getTextSearch();
-    }
+    if (getStorage.getTextSearch()) initData.searchText = getStorage.getTextSearch();
 
     const storedColumns = getStorage.getColumns();
 
@@ -69,24 +80,6 @@ const getInitData = (tbState, getStorage) => {
     }
 
     return initData;
-};
-
-const alignColumn = (columns) => (column: ColumnModel) => {
-    const currentColumn = columns.find((col: ColumnModel) => col.name === column.name);
-
-    if (!currentColumn) {
-        return;
-    }
-
-    currentColumn.visible = column.visible;
-
-    if (currentColumn.filterText !== null && column.filterOperator !== CompareOperators.None) {
-        return;
-    }
-
-    currentColumn.filterText = column.filterText;
-    currentColumn.filterOperator = column.filterOperator;
-    currentColumn.filterArgument = column.filterArgument;
 };
 
 const createTbOptions = (tubularOptions?: Partial<ITbOptions>): ITbOptions => {
