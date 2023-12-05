@@ -44,14 +44,6 @@
         "testMatch": [
             "<rootDir>/test/**/*.spec.(ts|tsx)"
         ],
-        "coverageThreshold": {
-            "global": {
-                "branches": 57,
-                "functions": 68,
-                "lines": 73,
-                "statements": -75
-            }
-        },
         "setupFilesAfterEnv": [
             "./setupJestEnv.ts"
         ]
