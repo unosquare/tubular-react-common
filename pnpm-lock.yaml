@@ -54,7 +54,7 @@ devDependencies:
     version: 3.2.0
   ts-jest:
     specifier: ^29.1.0
-    version: 29.1.2(@babel/core@7.22.9)(jest@29.5.0)(typescript@5.1.6)
+    version: 29.1.5(@babel/core@7.22.9)(jest@29.5.0)(typescript@5.1.6)
   typescript:
     specifier: ^5.1.6
     version: 5.1.6
@@ -4461,12 +4461,13 @@ packages:
       typescript: 5.1.6
     dev: true
 
-  /ts-jest@29.1.2(@babel/core@7.22.9)(jest@29.5.0)(typescript@5.1.6):
-    resolution: {integrity: sha512-br6GJoH/WUX4pu7FbZXuWGKGNDuU7b8Uj77g/Sp7puZV6EXzuByl6JrECvm0MzVzSTkSHWTihsXt+5XYER5b+g==}
-    engines: {node: ^16.10.0 || ^18.0.0 || >=20.0.0}
+  /ts-jest@29.1.5(@babel/core@7.22.9)(jest@29.5.0)(typescript@5.1.6):
+    resolution: {integrity: sha512-UuClSYxM7byvvYfyWdFI+/2UxMmwNyJb0NPkZPQE2hew3RurV7l7zURgOHAd/1I1ZdPpe3GUsXNXAcN8TFKSIg==}
+    engines: {node: ^14.15.0 || ^16.10.0 || ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
       '@babel/core': '>=7.0.0-beta.0 <8'
+      '@jest/transform': ^29.0.0
       '@jest/types': ^29.0.0
       babel-jest: ^29.0.0
       esbuild: '*'
@@ -4474,6 +4475,8 @@ packages:
       typescript: '>=4.3 <6'
     peerDependenciesMeta:
       '@babel/core':
+        optional: true
+      '@jest/transform':
         optional: true
       '@jest/types':
         optional: true
