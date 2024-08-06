@@ -10,12 +10,12 @@ import {
     sortColumnArray,
     TubularHttpClientAbstract,
 } from 'tubular-common';
-import { getLocalDataSource, tbId, getRemoteDataSource } from './helpers';
+import { getLocalDataSource, getRemoteDataSource, tbId } from './helpers';
 import { ITbApi } from './types/ITbApi';
 import { ITbInstance } from './types/ITbInstance';
 import { ITbOptions } from './types/ITbOptions';
 import { actions } from './state/actions';
-import { tbReducer, tbInitialState } from './state/reducer';
+import { tbInitialState, tbReducer } from './state/reducer';
 import { ITbState } from './types';
 
 const getCurrentPage = (response: GridResponse, tbState: ITbState) => {
@@ -24,9 +24,13 @@ const getCurrentPage = (response: GridResponse, tbState: ITbState) => {
     return currentPage === 0 ? 0 : currentPage - 1;
 };
 
-const processRequest = async (tbState: ITbState, getAllRecords) => {
-    const request = new GridRequest(tbState.columns, tbState.itemsPerPage, tbState.page, tbState.searchText);
-    const response: GridResponse = await getAllRecords()(request);
+const processRequest = async (
+    tbState: ITbState,
+    getAllRecords: () => (request: GridRequest) => Promise<GridResponse>,
+) => {
+    const response = await getAllRecords()(
+        new GridRequest(tbState.columns, tbState.itemsPerPage, tbState.page, tbState.searchText ?? undefined),
+    );
 
     return {
         page: getCurrentPage(response, tbState),
@@ -40,12 +44,16 @@ const processRequest = async (tbState: ITbState, getAllRecords) => {
     };
 };
 
-const exportRows = async (tbState: ITbState, allRows, getAllRecords) =>
+const exportRows = async (
+    tbState: ITbState,
+    allRows: boolean,
+    getAllRecords: () => (request: GridRequest) => Promise<GridResponse>,
+) =>
     allRows
-        ? (await getAllRecords()(new GridRequest(tbState.columns, -1, 0, tbState.searchText))).payload
+        ? (await getAllRecords()(new GridRequest(tbState.columns, -1, 0, tbState.searchText ?? undefined))).payload
         : tbState.data;
 
-const alignColumn = (columns: any[]) => (column: ColumnModel) => {
+const alignColumn = (columns: ColumnModel[]) => (column: ColumnModel) => {
     const currentColumn = columns.find((col: ColumnModel) => col.name === column.name);
 
     if (!currentColumn) return;
@@ -59,7 +67,7 @@ const alignColumn = (columns: any[]) => (column: ColumnModel) => {
     currentColumn.filterArgument = column.filterArgument;
 };
 
-const getInitData = (tbState, getStorage) => {
+const getInitData = (tbState: ITbState, getStorage: DataGridStorage) => {
     const initData = {
         page: tbState.page,
         searchText: tbState.searchText,
@@ -90,36 +98,36 @@ const createTbOptions = (tubularOptions?: Partial<ITbOptions>): ITbOptions => {
                 // Empty
             },
         },
-        componentName: temp.componentName || tbId(),
+        componentName: temp.componentName ?? tbId(),
         deps: temp.deps || null,
         pagination: temp.pagination || {
             itemsPerPage: 10,
             page: 0,
         },
-        searchText: temp.searchText || '',
+        searchText: temp.searchText ?? '',
         storage: (temp.componentName && temp.storage) || new NullStorage(),
     };
 };
 
 const useTubular = (
     initColumns: ColumnModel[],
-    source: any[] | string | Request | TubularHttpClientAbstract,
+    source: unknown[] | string | Request | TubularHttpClientAbstract,
     tubularOptions?: Partial<ITbOptions>,
 ): ITbInstance => {
     const tbOptions = createTbOptions(tubularOptions);
     const { componentName, pagination, callbacks, storage, deps, searchText } = tbOptions;
     const initStorage = storage || new NullStorage();
 
-    if (initStorage instanceof LocalStorage) {
+    if (initStorage instanceof LocalStorage && componentName) {
         initStorage.setGridName(componentName);
     }
 
     const [tbState, dispatch] = React.useReducer(tbReducer, {
         ...tbInitialState,
         columns: initColumns,
-        page: pagination.page || 0,
-        itemsPerPage: pagination.itemsPerPage || 10,
-        searchText: searchText || '',
+        page: pagination?.page ?? 0,
+        itemsPerPage: pagination?.itemsPerPage ?? 10,
+        searchText: searchText ?? '',
     });
     const [getStorage] = React.useState<DataGridStorage>(initStorage);
     const [refresh, setRefresh] = React.useState(0);
@@ -131,7 +139,11 @@ const useTubular = (
     );
 
     const api: ITbApi = {
-        exportTo: async (allRows: boolean, exportFunc: (payload: any[], columns: ColumnModel[]) => void) => {
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        exportTo: async (
+            allRows: boolean,
+            exportFunc: (payload: unknown[] | undefined, columns: ColumnModel[]) => void,
+        ) => {
             if (tbState.filteredRecordCount === 0) {
                 return;
             }
@@ -139,23 +151,20 @@ const useTubular = (
             exportFunc(await exportRows(tbState, allRows, getAllRecords), tbState.columns);
         },
         goToPage: (page: number) => dispatch(actions.goToPage(page)),
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         processRequest: async () => {
             dispatch(actions.startRequest());
 
             try {
                 dispatch(actions.requestDone(await processRequest(tbState, getAllRecords)));
             } catch (err) {
-                if (callbacks.onError) {
-                    callbacks.onError(err);
-                }
+                if (callbacks?.onError) callbacks.onError(err);
 
                 dispatch(actions.requestError(err));
             }
         },
         reloadGrid: (resetPage = false) => {
-            if (resetPage) {
-                dispatch(actions.goToPage(0));
-            }
+            if (resetPage) dispatch(actions.goToPage(0));
 
             forceRefresh();
         },
@@ -163,14 +172,10 @@ const useTubular = (
         sortColumn: (property: string, multiSort = false) =>
             dispatch(actions.setColumns(sortColumnArray(property, [...tbState.columns], multiSort))),
         updateItemsPerPage: (itemsPerPage: number) => {
-            if (tbState.itemsPerPage !== itemsPerPage) {
-                dispatch(actions.updateItemsPerPage(itemsPerPage));
-            }
+            if (tbState.itemsPerPage !== itemsPerPage) dispatch(actions.updateItemsPerPage(itemsPerPage));
         },
         updateSearchText: (value: string) => {
-            if (tbState.searchText !== value) {
-                dispatch(actions.updateSearchText(value));
-            }
+            if (tbState.searchText !== value) dispatch(actions.updateSearchText(value));
         },
     };
 
@@ -178,9 +183,7 @@ const useTubular = (
     const extraDependencies = deps || [];
 
     React.useEffect(() => {
-        if (!tbState.initialized) {
-            initGrid();
-        }
+        if (!tbState.initialized) initGrid();
     }, []);
 
     React.useEffect(() => {

@@ -16,18 +16,18 @@ export const actions = {
     requestDone: (payload: {
         page: number;
         columns: ColumnModel[];
-        searchText: string;
-        aggregate: any;
-        data: any[];
+        searchText: string | null;
+        aggregate: Record<string, number> | undefined;
+        data: unknown[] | undefined;
         filteredRecordCount: number;
         totalRecordCount: number;
-        error: Error;
+        error: unknown;
     }) => createAction(REQUEST_SUCCESS, payload),
-    requestError: (payload: Error) => createAction(REQUEST_ERROR, payload),
+    requestError: (payload: unknown) => createAction(REQUEST_ERROR, payload),
     setColumns: (payload: ColumnModel[]) => createAction(SET_COLUMNS, payload),
     updateItemsPerPage: (payload: number) => createAction(UPDATE_ITEMS_PER_PAGE, payload),
     updateSearchText: (payload: string) => createAction(UPDATE_SEARCH_TEXT, payload),
-    initGridFromStorage: (payload: { columns: ColumnModel[]; page: number; searchText: string }) =>
+    initGridFromStorage: (payload: { columns: ColumnModel[]; page: number; searchText: string | null }) =>
         createAction(INIT_GRID_FROM_STORAGE, payload),
 };
 

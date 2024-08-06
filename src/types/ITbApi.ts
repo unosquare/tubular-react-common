@@ -1,7 +1,7 @@
 import { ColumnModel } from 'tubular-common';
 
 export interface ITbApi {
-    exportTo: (allRows: boolean, exportFunc: (payload: any[], columns: ColumnModel[]) => void) => void;
+    exportTo: (allRows: boolean, exportFunc: (payload: unknown[] | undefined, columns: ColumnModel[]) => void) => void;
     goToPage: (page: number) => void;
     processRequest: () => void;
     reloadGrid: (resetPage?: boolean) => void;

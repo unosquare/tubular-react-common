@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import { ColumnModel, TubularHttpClientAbstract } from 'tubular-common';
 import { ITbListInstance } from './types/ITbListInstance';
 import { ITbOptions } from './types/ITbOptions';
@@ -7,23 +6,24 @@ import useTubular from './useTubular';
 
 const useTbList = (
     initColumns: ColumnModel[],
-    source: any[] | string | Request | TubularHttpClientAbstract,
+    source: unknown[] | string | Request | TubularHttpClientAbstract,
     tubularOptions?: Partial<ITbOptions>,
 ): ITbListInstance => {
     const tubular = useTubular(initColumns, source, tubularOptions);
-    const infiniteLoaderRef = React.useRef(null);
+    const infiniteLoaderRef = React.useRef<{ resetLoadMoreRowsCache: (x: boolean) => void }>(null);
 
     const [list, setListState] = React.useState({
         hasNextPage: false,
         // We need to hold all the items that we have loaded
         // This will be a cumulated of all of the rows from tubular instance
-        items: [],
+        items: [] as unknown[],
     });
 
     // Reset list is required to flush cache from
     // Infinite loader
     const resetList = () => {
-        infiniteLoaderRef.current.resetLoadMoreRowsCache(true);
+        if (infiniteLoaderRef.current) infiniteLoaderRef.current.resetLoadMoreRowsCache(true);
+
         setListState({ hasNextPage: false, items: [] });
         tubular.api.goToPage(0);
     };
@@ -39,9 +39,11 @@ const useTbList = (
     };
 
     React.useEffect(() => {
+        if (!tubular.state.data) return;
+
         setListState((state) => ({
-            hasNextPage: state.items.length + tubular.state.data.length < tubular.state.filteredRecordCount,
-            items: [...state.items].concat(...tubular.state.data),
+            hasNextPage: state.items.length + tubular.state.data!.length < tubular.state.filteredRecordCount,
+            items: [...state.items, ...tubular.state.data!],
         }));
     }, [tubular.state.data, tubular.state.filteredRecordCount]);
 

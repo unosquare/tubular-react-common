@@ -1,4 +1,4 @@
-/* tslint:disable:interface-over-type-literal */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type FunctionType = (...args: any[]) => any;
 type ActionCreatorsMapObject = { [actionCreator: string]: FunctionType };
 

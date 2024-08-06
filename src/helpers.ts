@@ -1,22 +1,22 @@
 import {
+    ColumnModel,
     getCsv,
     getHtml,
-    ColumnModel,
     GridRequest,
     GridResponse,
-    TubularHttpClientAbstract,
     parsePayload,
-    TubularHttpClient,
     Transformer,
+    TubularHttpClient,
+    TubularHttpClientAbstract,
 } from 'tubular-common';
-import * as striptags from 'striptags';
+import striptags from 'striptags';
 
 let id = 0;
 
-export const tbId = (): string => `tbComponent_${id++}`;
+export const tbId = () => `tbComponent_${id++}`;
 
 export const getLocalDataSource =
-    (source: any[]) =>
+    (source: unknown[]) =>
     (request: GridRequest): Promise<GridResponse> =>
         new Promise((resolve, reject) => {
             try {
@@ -34,19 +34,20 @@ export const getRemoteDataSource =
 
         const data: GridResponse = await httpClient.fetch(gridRequest);
 
-        if (!TubularHttpClient.isValidResponse(data as any)) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        if (!TubularHttpClient.isValidResponse({ ...data })) {
             throw new Error('Server response is a invalid Tubular object');
         }
 
         TubularHttpClient.fixResponse(data);
 
-        data.payload = data.payload.map((row: Record<string, any>) => parsePayload(row, gridRequest.columns));
+        data.payload = data.payload?.map((row) => parsePayload(row as Record<string, unknown>, gridRequest.columns));
 
         return data;
     };
 
 export const generateOnRowClickProxy =
-    (onRowClick: (row: Record<string, any>) => void) => (row: Record<string, any>) => (): void => {
+    (onRowClick: (row: Record<string, unknown>) => void) => (row: Record<string, unknown>) => (): void => {
         if (onRowClick) {
             onRowClick(row);
         }
@@ -56,6 +57,9 @@ function printDoc(gridResult: [], columns: ColumnModel[], gridName: string): voi
     const tableHtml = getHtml(gridResult, columns);
 
     const documentToPrint = window.open('about:blank', 'Print', 'location=0,height=500,width=800');
+
+    if (!documentToPrint) return;
+
     documentToPrint.document.write(
         '<link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.min.css" />',
     );
@@ -85,10 +89,5 @@ function exportFile(gridResult: [], columns: ColumnModel[]): void {
     URL.revokeObjectURL(fileURL);
 }
 
-export const exportGrid = (media: string, gridResult: [], columns: ColumnModel[], gridName: string): void => {
-    if (media === 'csv') {
-        exportFile(gridResult, columns);
-    } else {
-        printDoc(gridResult, columns, gridName);
-    }
-};
+export const exportGrid = (media: string, gridResult: [], columns: ColumnModel[], gridName: string) =>
+    media === 'csv' ? exportFile(gridResult, columns) : printDoc(gridResult, columns, gridName);

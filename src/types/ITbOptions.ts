@@ -4,7 +4,7 @@ import { ITbPagination } from './ITbPagination';
 
 export interface ITbOptions {
     componentName?: string;
-    deps?: any[];
+    deps?: unknown[] | null;
     pagination?: Partial<ITbPagination>;
     callbacks?: ITbCallbacks;
     storage?: DataGridStorage;

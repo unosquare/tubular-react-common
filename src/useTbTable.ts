@@ -7,26 +7,22 @@ import useTubular from './useTubular';
 
 const useTbTable = (
     initColumns: ColumnModel[],
-    source: any[] | string | Request | TubularHttpClientAbstract,
+    source: unknown[] | string | Request | TubularHttpClientAbstract,
     tubularOptions?: Partial<ITbOptions>,
 ): ITbTableInstance => {
     const tubular = useTubular(initColumns, source, tubularOptions);
     const [getMultiSort, setMultiSort] = React.useState(false);
 
     const handleKeyDown = React.useCallback(
-        (event: any) => {
-            if (event.key === 'Control' && !getMultiSort) {
-                setMultiSort(true);
-            }
+        (event: { key: unknown }) => {
+            if (event.key === 'Control' && !getMultiSort) setMultiSort(true);
         },
         [getMultiSort],
     );
 
     const handleKeyUp = React.useCallback(
-        (event: any) => {
-            if (event.key === 'Control' && getMultiSort) {
-                setMultiSort(false);
-            }
+        (event: { key: unknown }) => {
+            if (event.key === 'Control' && getMultiSort) setMultiSort(false);
         },
         [getMultiSort],
     );
