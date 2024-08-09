@@ -56,11 +56,11 @@
     },
     "homepage": "https://github.com/unosquare/tubular-react-common#readme",
     "dependencies": {
-        "tubular-common": "^2.9.0"
+        "tubular-common": "^6.1.0"
     },
     "devDependencies": {
         "@testing-library/jest-dom": "^6.4.8",
-        "@testing-library/react": "^16.0.0",
+        "@testing-library/react": "^12.1.5",
         "@types/jest": "^29.5.12",
         "eslint": "^8.57.0",
         "eslint-config-unosquare": "0.19.0",
@@ -75,9 +75,9 @@
         "typescript": "^5.5.4"
     },
     "peerDependencies": {
-        "@types/react": "^18.3.3",
-        "@types/react-dom": "^18.3.0",
-        "react": "^18.3.1",
-        "react-dom": "^18.3.1"
+        "@types/react": "^17.0.0",
+        "@types/react-dom": "^17.0.11",
+        "react": "17.0.1",
+        "react-dom": "17.0.1"
     }
 }
