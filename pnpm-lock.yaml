@@ -21,8 +21,8 @@ importers:
         specifier: 17.0.1
         version: 17.0.1(react@17.0.1)
       tubular-common:
-        specifier: ^6.1.0
-        version: 6.1.0
+        specifier: ^6.2.0
+        version: 6.2.0
     devDependencies:
       '@testing-library/jest-dom':
         specifier: ^6.4.8
@@ -2447,8 +2447,8 @@ packages:
   tslib@2.6.3:
     resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
 
-  tubular-common@6.1.0:
-    resolution: {integrity: sha512-tOiKHLGeaXGRxA5No/5MhFlTpxxOjXiUPArBGRkgZbxRHEnkw6ArGSOLETAf/XQqI0aWMPbtqfyh/i/Jc8vFGQ==}
+  tubular-common@6.2.0:
+    resolution: {integrity: sha512-2bS7L8gHQAyuSj7sKKiR1SXFRt4V/Y8lJvcj9I7AcT78/1USIwJu1rZxpuE4e32a031sgG0+tMs3Fns902mQ3w==}
 
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
@@ -5620,7 +5620,7 @@ snapshots:
 
   tslib@2.6.3: {}
 
-  tubular-common@6.1.0:
+  tubular-common@6.2.0:
     dependencies:
       dayjs: 1.11.12
 
