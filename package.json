@@ -1,6 +1,6 @@
 {
     "name": "tubular-react-common",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "description": "Unosquare Tubular React Common",
     "main": "dist/index.js",
     "scripts": {
@@ -42,11 +42,15 @@
             "!**/node_modules/**",
             "!./test/**"
         ],
-        "transformIgnorePatterns": ["/node_modules/(?!tubular-common)"],
+        "transformIgnorePatterns": [
+            "/node_modules/(?!tubular-common)"
+        ],
         "testMatch": [
             "<rootDir>/test/**/*.spec.(ts|tsx)"
         ],
-        "setupFilesAfterEnv": ["./setupJestEnv.ts"]
+        "setupFilesAfterEnv": [
+            "./setupJestEnv.ts"
+        ]
     },
     "repository": {
         "type": "git",
