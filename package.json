@@ -63,11 +63,11 @@
     },
     "homepage": "https://github.com/unosquare/tubular-react-common#readme",
     "dependencies": {
-        "tubular-common": "^6.3.0"
+        "tubular-common": "^6.4.0"
     },
     "devDependencies": {
-        "@babel/preset-env": "^7.25.3",
-        "@testing-library/jest-dom": "^5.16.1",
+        "@babel/preset-env": "^7.25.4",
+        "@testing-library/jest-dom": "^6.5.0",
         "@testing-library/react": "^12.1.2",
         "@types/jest": "^29.5.12",
         "eslint": "^8.57.0",
@@ -80,7 +80,7 @@
         "jest-environment-jsdom": "^29.7.0",
         "prettier": "^3.3.3",
         "striptags": "^3.2.0",
-        "ts-jest": "^29.2.4",
+        "ts-jest": "^29.2.5",
         "typescript": "^5.5.4"
     },
     "peerDependencies": {
