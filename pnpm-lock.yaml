@@ -22,7 +22,7 @@ importers:
         version: 17.0.1(react@17.0.1)
       tubular-common:
         specifier: ^6.6.0
-        version: 6.6.0
+        version: 6.7.0
     devDependencies:
       '@babel/preset-env':
         specifier: ^7.25.4
@@ -2995,8 +2995,8 @@ packages:
   tslib@2.6.3:
     resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
 
-  tubular-common@6.6.0:
-    resolution: {integrity: sha512-FEWXCIjmf07r1SjOCzMvJMobEErRAuTHEj9dX34dx7CWa9sSMU6Pr6e2jpbPBMpQm8IHDoU7N77akfpBKuuMig==}
+  tubular-common@6.7.0:
+    resolution: {integrity: sha512-26JQ07C+BrdbVcZmURSi3pocFIxSQNfQn+RUuq6hAsutCk+3mVuQmLxNHtPDARwgCGytDuO884H3eM7dlbW9Mg==}
 
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
@@ -6922,7 +6922,7 @@ snapshots:
 
   tslib@2.6.3: {}
 
-  tubular-common@6.6.0:
+  tubular-common@6.7.0:
     dependencies:
       dayjs: 1.11.13
 
