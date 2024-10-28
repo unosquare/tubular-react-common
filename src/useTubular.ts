@@ -139,7 +139,6 @@ const useTubular = (
     );
 
     const api: ITbApi = {
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         exportTo: async (
             allRows: boolean,
             exportFunc: (payload: unknown[] | undefined, columns: ColumnModel[]) => void,
@@ -151,7 +150,6 @@ const useTubular = (
             exportFunc(await exportRows(tbState, allRows, getAllRecords), tbState.columns);
         },
         goToPage: (page: number) => dispatch(actions.goToPage(page)),
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         processRequest: async () => {
             dispatch(actions.startRequest());
 

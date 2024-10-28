@@ -34,7 +34,6 @@ export const getRemoteDataSource =
 
         const data: GridResponse = await httpClient.fetch(gridRequest);
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         if (!TubularHttpClient.isValidResponse({ ...data })) {
             throw new Error('Server response is a invalid Tubular object');
         }
