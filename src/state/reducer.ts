@@ -1,4 +1,4 @@
-import { ITbState } from '../types';
+import type { ITbState } from '../types';
 import * as Actions from './actions';
 
 export const tbInitialState: ITbState = {
@@ -16,7 +16,7 @@ export const tbInitialState: ITbState = {
     totalRecordCount: -1,
 };
 
-export const tbReducer = (state: ITbState = tbInitialState, action: Actions.Actions): ITbState => {
+export const tbReducer = (state: ITbState, action: Actions.Actions): ITbState => {
     switch (action.type) {
         case Actions.GOTO_PAGE: {
             return { ...state, page: action.payload };

@@ -1,4 +1,4 @@
-import { ColumnModel } from 'tubular-common';
+import type { ColumnModel } from 'tubular-common';
 
 export interface ITbApi {
     exportTo: (allRows: boolean, exportFunc: (payload: unknown[] | undefined, columns: ColumnModel[]) => void) => void;

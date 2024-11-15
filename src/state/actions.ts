@@ -1,5 +1,5 @@
-import { ColumnModel } from 'tubular-common';
-import { ActionsUnion, createAction } from './actionHelpers';
+import type { ColumnModel } from 'tubular-common';
+import { type ActionsUnion, createAction } from './actionHelpers';
 
 export const START_REQUEST = 'start request';
 export const REQUEST_SUCCESS = 'request success';

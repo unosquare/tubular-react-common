@@ -2,17 +2,17 @@
  * @jest-environment jsdom
  */
 import '@testing-library/jest-dom/extend-expect';
-import * as React from 'react';
 import {
-    render,
-    getAllByRole,
-    RenderResult,
+    type RenderResult,
     fireEvent,
-    waitFor,
+    getAllByRole,
     getByRole,
     queryAllByRole,
     queryByRole,
+    render,
+    waitFor,
 } from '@testing-library/react';
+import * as React from 'react';
 import { TubularComponent } from './components/tubularComponent';
 
 import * as helpers from '../src/helpers';

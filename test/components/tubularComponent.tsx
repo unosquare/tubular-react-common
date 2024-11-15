@@ -16,7 +16,7 @@ export const TubularComponent = () => {
             {!state.isLoading && (
                 <table>
                     <thead>
-                        <tr role="rowheader">
+                        <tr>
                             {state.columns
                                 .filter((col) => col.visible)
                                 .map((col) => (
@@ -30,9 +30,7 @@ export const TubularComponent = () => {
                                 {state.columns
                                     .filter((col) => col.visible)
                                     .map((col) => (
-                                        <td role="cell" key={col.name}>
-                                            {row[col.name]}
-                                        </td>
+                                        <td key={col.name}>{row[col.name]}</td>
                                     ))}
                             </tr>
                         ))}

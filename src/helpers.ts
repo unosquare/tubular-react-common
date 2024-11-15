@@ -1,15 +1,15 @@
+import striptags from 'striptags';
 import {
-    ColumnModel,
+    type ColumnModel,
+    type GridRequest,
+    type GridResponse,
+    TubularHttpClient,
+    type TubularHttpClientAbstract,
     getCsv,
     getHtml,
-    GridRequest,
-    GridResponse,
+    getResponse,
     parsePayload,
-    Transformer,
-    TubularHttpClient,
-    TubularHttpClientAbstract,
 } from 'tubular-common';
-import striptags from 'striptags';
 
 let id = 0;
 
@@ -20,7 +20,7 @@ export const getLocalDataSource =
     (request: GridRequest): Promise<GridResponse> =>
         new Promise((resolve, reject) => {
             try {
-                resolve(Transformer.getResponse(request, source));
+                resolve(getResponse(request, source));
             } catch (error) {
                 reject(error);
             }

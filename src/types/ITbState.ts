@@ -1,4 +1,4 @@
-import { ColumnModel, DataGridStorage } from 'tubular-common';
+import type { ColumnModel, DataGridStorage } from 'tubular-common';
 
 export interface ITbState {
     aggregate: Record<string, number> | undefined;

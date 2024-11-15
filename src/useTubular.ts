@@ -1,22 +1,22 @@
 import * as React from 'react';
 import {
-    ColumnModel,
+    type ColumnModel,
     CompareOperators,
-    DataGridStorage,
+    type DataGridStorage,
     GridRequest,
-    GridResponse,
+    type GridResponse,
     LocalStorage,
     NullStorage,
+    type TubularHttpClientAbstract,
     sortColumnArray,
-    TubularHttpClientAbstract,
 } from 'tubular-common';
 import { getLocalDataSource, getRemoteDataSource, tbId } from './helpers';
-import { ITbApi } from './types/ITbApi';
-import { ITbInstance } from './types/ITbInstance';
-import { ITbOptions } from './types/ITbOptions';
 import { actions } from './state/actions';
 import { tbInitialState, tbReducer } from './state/reducer';
-import { ITbState } from './types';
+import type { ITbState } from './types';
+import type { ITbApi } from './types/ITbApi';
+import type { ITbInstance } from './types/ITbInstance';
+import type { ITbOptions } from './types/ITbOptions';
 
 const getCurrentPage = (response: GridResponse, tbState: ITbState) => {
     const maxPage = Math.ceil(response.totalRecordCount / tbState.itemsPerPage);
@@ -134,7 +134,7 @@ const useTubular = (
     const forceRefresh = () => setRefresh((x) => x + 1);
 
     const getAllRecords = React.useCallback(
-        () => (source instanceof Array ? getLocalDataSource(source) : getRemoteDataSource(source)),
+        () => (Array.isArray(source) ? getLocalDataSource(source) : getRemoteDataSource(source)),
         [source],
     );
 

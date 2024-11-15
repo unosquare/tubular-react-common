@@ -21,12 +21,12 @@ export const TbTableComponent = () => {
                 <button onClick={toggleFirstRowSelect}>Select first row</button>
                 <button onClick={toggleAllRowsSelect}>Toggle all rows</button>
             </div>
-            {state.isLoading && <div data-testid="loader">Loading</div>}
+            {state.isLoading && <div data-testid='loader'>Loading</div>}
             <div>Selected rows: {selection.getSelectedCount()}</div>
             {selection.isIndeterminateSelection() && <div>Is indeterminate selection</div>}
             <table>
                 <thead>
-                    <tr role="rowheader">
+                    <tr>
                         {state.columns
                             .filter((col) => col.visible)
                             .map((col) => (
@@ -40,17 +40,17 @@ export const TbTableComponent = () => {
                             {state.columns
                                 .filter((col) => col.visible)
                                 .map((col) => (
-                                    <td role="cell" key={col.name}>
-                                        {row[col.name]}
-                                    </td>
+                                    <td key={col.name}>{row[col.name]}</td>
                                 ))}
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <section role="list">
+            <section role='list'>
                 {selection.getSelectedRows().map((row) => (
-                    <div key={row.OrderID} role="listitem">{row.OrderID}</div>
+                    <div key={row.OrderID} role='listitem'>
+                        {row.OrderID}
+                    </div>
                 ))}
             </section>
         </>

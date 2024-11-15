@@ -12,10 +12,9 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "sourceMap": false,
-        "jsx": "react",
+        "jsx": "react-jsx",
         "declaration": true,
         "outDir": "./dist"
     },
-    "include": ["./src/**/*.ts"],
-    "exclude": ["./node_modules"]
+    "include": ["./src/**/*.ts"]
 }

@@ -4,6 +4,4 @@ src
 .nyc_output
 .vscode
 *.json
-.eslintrc.*
-.prettierrc.js
 *.yml

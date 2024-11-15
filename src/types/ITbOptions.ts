@@ -1,6 +1,6 @@
-import { DataGridStorage } from 'tubular-common';
-import { ITbCallbacks } from './ITbCallbacks';
-import { ITbPagination } from './ITbPagination';
+import type { DataGridStorage } from 'tubular-common';
+import type { ITbCallbacks } from './ITbCallbacks';
+import type { ITbPagination } from './ITbPagination';
 
 export interface ITbOptions {
     componentName?: string;

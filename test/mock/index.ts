@@ -1,4 +1,4 @@
-import { ColumnDataType, GridRequest, createColumn, ColumnSortDirection, AggregateFunctions } from "tubular-common";
+import { AggregateFunctions, ColumnDataType, ColumnSortDirection, GridRequest, createColumn } from 'tubular-common';
 
 export const simpleRequest = new GridRequest(
     [

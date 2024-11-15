@@ -1,5 +1,5 @@
-import { ITbApi } from './ITbApi';
-import { ITbState } from './ITbState';
+import type { ITbApi } from './ITbApi';
+import type { ITbState } from './ITbState';
 
 export interface ITbTableInstance {
     api: ITbApi & {

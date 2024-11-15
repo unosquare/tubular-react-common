@@ -1,4 +1,4 @@
-import { ITbState } from './ITbState';
+import type { ITbState } from './ITbState';
 
 export interface ITbListInternalState {
     hasNextPage: boolean;

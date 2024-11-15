@@ -2,8 +2,8 @@
  * @jest-environment jsdom
  */
 
+import { fireEvent, getByTestId, getByText, render } from '@testing-library/react';
 import * as React from 'react';
-import { render, fireEvent, getByText, getByTestId } from '@testing-library/react';
 import { GridRefreshComponent } from './components/gridRefreshComponent';
 
 describe('useGridRefresh', () => {

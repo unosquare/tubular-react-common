@@ -1,11 +1,10 @@
 import * as React from 'react';
-
-import { ColumnModel, TubularHttpClientAbstract } from 'tubular-common';
-import { ITbOptions } from './types/ITbOptions';
-import { ITbTableInstance } from './types/ITbTableInstance';
+import type { ColumnModel, TubularHttpClientAbstract } from 'tubular-common';
+import type { ITbOptions } from './types/ITbOptions';
+import type { ITbTableInstance } from './types/ITbTableInstance';
 import useTubular from './useTubular';
 
-const useTbTable = (
+export default (
     initColumns: ColumnModel[],
     source: unknown[] | string | Request | TubularHttpClientAbstract,
     tubularOptions?: Partial<ITbOptions>,
@@ -47,5 +46,3 @@ const useTbTable = (
         state: tubular.state,
     };
 };
-
-export default useTbTable;
