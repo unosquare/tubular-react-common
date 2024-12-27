@@ -1,6 +1,6 @@
 {
     "name": "tubular-react-common",
-    "version": "4.0.0",
+    "version": "4.0.1",
     "description": "Unosquare Tubular React Common",
     "main": "dist/index.js",
     "scripts": {
@@ -15,7 +15,11 @@
     },
     "jest": {
         "automock": false,
-        "moduleFileExtensions": ["ts", "tsx", "js"],
+        "moduleFileExtensions": [
+            "ts",
+            "tsx",
+            "js"
+        ],
         "transform": {
             "^.+\\.(ts|tsx)$": [
                 "ts-jest",
@@ -26,10 +30,20 @@
             ],
             "^.+\\.(js)$": "babel-jest"
         },
-        "collectCoverageFrom": ["./src/**/*.{ts,tsx}", "!**/node_modules/**", "!./test/**"],
-        "transformIgnorePatterns": ["/node_modules/(?!tubular-common)"],
-        "testMatch": ["<rootDir>/test/**/*.spec.(ts|tsx)"],
-        "setupFilesAfterEnv": ["./setupJestEnv.ts"]
+        "collectCoverageFrom": [
+            "./src/**/*.{ts,tsx}",
+            "!**/node_modules/**",
+            "!./test/**"
+        ],
+        "transformIgnorePatterns": [
+            "/node_modules/(?!tubular-common)"
+        ],
+        "testMatch": [
+            "<rootDir>/test/**/*.spec.(ts|tsx)"
+        ],
+        "setupFilesAfterEnv": [
+            "./setupJestEnv.ts"
+        ]
     },
     "repository": {
         "type": "git",
