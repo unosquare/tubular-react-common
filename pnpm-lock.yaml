@@ -25,7 +25,7 @@ importers:
         version: 3.2.0
       tubular-common:
         specifier: ^7.0.4
-        version: 7.0.4
+        version: 7.0.5
     devDependencies:
       '@babel/preset-env':
         specifier: ^7.26.0
@@ -38,7 +38,7 @@ importers:
         version: 6.6.3
       '@testing-library/react':
         specifier: ^12.1.2
-        version: 12.1.5(@types/react@18.3.18)(react-dom@18.3.1)(react@18.3.1)
+        version: 12.1.5(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/jest':
         specifier: ^29.5.14
         version: 29.5.14
@@ -47,13 +47,13 @@ importers:
         version: 29.7.0(@babel/core@7.26.0)
       jest:
         specifier: ^29.7.0
-        version: 29.7.0
+        version: 29.7.0(@types/node@22.10.2)
       jest-environment-jsdom:
         specifier: ^29.7.0
         version: 29.7.0
       ts-jest:
         specifier: ^29.2.5
-        version: 29.2.5(@babel/core@7.26.0)(babel-jest@29.7.0)(jest@29.7.0)(typescript@5.7.2)
+        version: 29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(jest@29.7.0(@types/node@22.10.2))(typescript@5.7.2)
       typescript:
         specifier: ^5.7.2
         version: 5.7.2
@@ -2142,8 +2142,8 @@ packages:
       esbuild:
         optional: true
 
-  tubular-common@7.0.4:
-    resolution: {integrity: sha512-3iKhpBT+3fXro3BPWcjDVPv5RCM5fCEJDT3aqnLUTrLCSqWLmVOjp/GGPAH9lgP6tf7lLHjeZ0LoX/R2KgwnnA==}
+  tubular-common@7.0.5:
+    resolution: {integrity: sha512-k9U0V/8wU+jT7qTJDcJWe3IrWJwAlkgK3RAqU2nYTuQTnh+Lnb5AI1Do+iBrNg9B1Rcb9YwlxLhWw0rXlcgRbg==}
 
   type-detect@4.0.8:
     resolution: {integrity: sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==}
@@ -3268,7 +3268,7 @@ snapshots:
       lodash: 4.17.21
       redent: 3.0.0
 
-  '@testing-library/react@12.1.5(@types/react@18.3.18)(react-dom@18.3.1)(react@18.3.1)':
+  '@testing-library/react@12.1.5(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.26.0
       '@testing-library/dom': 8.20.1
@@ -3596,7 +3596,7 @@ snapshots:
     dependencies:
       browserslist: 4.24.3
 
-  create-jest@29.7.0:
+  create-jest@29.7.0(@types/node@22.10.2):
     dependencies:
       '@jest/types': 29.6.3
       chalk: 4.1.2
@@ -4082,13 +4082,13 @@ snapshots:
       - babel-plugin-macros
       - supports-color
 
-  jest-cli@29.7.0:
+  jest-cli@29.7.0(@types/node@22.10.2):
     dependencies:
       '@jest/core': 29.7.0
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
       chalk: 4.1.2
-      create-jest: 29.7.0
+      create-jest: 29.7.0(@types/node@22.10.2)
       exit: 0.1.2
       import-local: 3.2.0
       jest-config: 29.7.0(@types/node@22.10.2)
@@ -4106,7 +4106,6 @@ snapshots:
       '@babel/core': 7.26.0
       '@jest/test-sequencer': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 22.10.2
       babel-jest: 29.7.0(@babel/core@7.26.0)
       chalk: 4.1.2
       ci-info: 3.9.0
@@ -4126,6 +4125,8 @@ snapshots:
       pretty-format: 29.7.0
       slash: 3.0.0
       strip-json-comments: 3.1.1
+    optionalDependencies:
+      '@types/node': 22.10.2
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
@@ -4222,7 +4223,7 @@ snapshots:
       jest-util: 29.7.0
 
   jest-pnp-resolver@1.2.3(jest-resolve@29.7.0):
-    dependencies:
+    optionalDependencies:
       jest-resolve: 29.7.0
 
   jest-regex-util@29.6.3: {}
@@ -4360,12 +4361,12 @@ snapshots:
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
-  jest@29.7.0:
+  jest@29.7.0(@types/node@22.10.2):
     dependencies:
       '@jest/core': 29.7.0
       '@jest/types': 29.6.3
       import-local: 3.2.0
-      jest-cli: 29.7.0
+      jest-cli: 29.7.0(@types/node@22.10.2)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -4824,14 +4825,12 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  ts-jest@29.2.5(@babel/core@7.26.0)(babel-jest@29.7.0)(jest@29.7.0)(typescript@5.7.2):
+  ts-jest@29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(jest@29.7.0(@types/node@22.10.2))(typescript@5.7.2):
     dependencies:
-      '@babel/core': 7.26.0
-      babel-jest: 29.7.0(@babel/core@7.26.0)
       bs-logger: 0.2.6
       ejs: 3.1.10
       fast-json-stable-stringify: 2.1.0
-      jest: 29.7.0
+      jest: 29.7.0(@types/node@22.10.2)
       jest-util: 29.7.0
       json5: 2.2.3
       lodash.memoize: 4.1.2
@@ -4839,8 +4838,13 @@ snapshots:
       semver: 7.6.3
       typescript: 5.7.2
       yargs-parser: 21.1.1
+    optionalDependencies:
+      '@babel/core': 7.26.0
+      '@jest/transform': 29.7.0
+      '@jest/types': 29.6.3
+      babel-jest: 29.7.0(@babel/core@7.26.0)
 
-  tubular-common@7.0.4:
+  tubular-common@7.0.5:
     dependencies:
       dayjs: 1.11.13
 
