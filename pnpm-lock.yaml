@@ -25,7 +25,7 @@ importers:
         version: 3.2.0
       tubular-common:
         specifier: ^7.0.4
-        version: 7.0.5
+        version: 7.0.6
     devDependencies:
       '@babel/preset-env':
         specifier: ^7.26.0
@@ -2142,8 +2142,8 @@ packages:
       esbuild:
         optional: true
 
-  tubular-common@7.0.5:
-    resolution: {integrity: sha512-k9U0V/8wU+jT7qTJDcJWe3IrWJwAlkgK3RAqU2nYTuQTnh+Lnb5AI1Do+iBrNg9B1Rcb9YwlxLhWw0rXlcgRbg==}
+  tubular-common@7.0.6:
+    resolution: {integrity: sha512-50vv+y/ZUfcr3f+gKUBzmx1oN6h7/uZmuFP+ggH8sc65uZsSeBPNBoOX6lPEj01rfIG9QFTcCtnsr3aDbA5LUQ==}
 
   type-detect@4.0.8:
     resolution: {integrity: sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==}
@@ -4844,7 +4844,7 @@ snapshots:
       '@jest/types': 29.6.3
       babel-jest: 29.7.0(@babel/core@7.26.0)
 
-  tubular-common@7.0.5:
+  tubular-common@7.0.6:
     dependencies:
       dayjs: 1.11.13
 
